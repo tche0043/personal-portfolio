@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Software Engineer Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#hero" class="nav-logo">DEVELOPER</a>
+            <ul class="nav-menu">
+                <li><a href="#about" class="nav-link">關於我</a></li>
+                <li><a href="#portfolio" class="nav-link">作品集</a></li>
+                <li><a href="#tech-stack" class="nav-link">技術棧</a></li>
+                <li><a href="#contact" class="nav-link">聯絡我</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    <div id="root">
+ 
+    <div id="root">
+      <div class="tech-background">
+        <div class="animated-grid"></div>
+        <div id="orb1" class="orb"></div>
+        <div id="orb2" class="orb"></div>
+        <svg
+          class="tech-svg-animation"
+          viewBox="0 0 1200 800"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            id="svg-path-1"
+            d="M100 400 Q 300 200 500 400 T 900 400"
+            stroke="url(#techGradient)"
+            stroke-width="2"
+            fill="none"
+          />
+          <path
+            id="svg-path-2"
+            d="M200 300 Q 400 100 600 300 T 1000 300"
+            stroke="url(#techGradient2)"
+            stroke-width="2"
+            fill="none"
+          />
+          <defs>
+            <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.8" />
+              <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.2" />
+            </linearGradient>
+            <linearGradient
+              id="techGradient2"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
+              <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.6" />
+              <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.2" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <section id="hero" class="hero-section">
+        <div class="container">
+          <h1 class="hero-title">
+            Hank Cheng
+            <br />
+            <span class="text-white">JAVA 軟體工程師</span>
+          </h1>
+          <div class="hero-buttons">
+            <a href="assets/resume.pdf" download="Hank_Cheng_Resume.pdf" class="btn btn-primary">
+              <svg class="icon" viewBox="0 0 24 24">
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 15C3 17.8284 3 19.2426 3.87868 20.1213C4.75736 21 6.17157 21 9 21H15C17.8284 21 19.2426 21 20.1213 20.1213C21 19.2426 21 17.8284 21 15 M12 3V16M12 16L16 11.625M12 16L8 11.625"
+                />
+              </svg>
+              下載履歷
+            </a>
+            <a href="#portfolio" class="btn btn-outline">
+              <svg class="icon" viewBox="0 0 24 24">
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1-2-2h6m4-3h6v6m-11 5L21 3"
+                />
+              </svg>
+              查看作品
+            </a>
+          </div>
+            <div class="hero-doodo" >
+              <img src="assets/doodo-background.svg" class="doodo-background">
+              <img src="assets/doodo-person.svg" class="doodo-person">
+            </div>
+
+          <div class="floating-icons-container">
+            <svg class="floating-icon icon-code" viewBox="0 0 24 24">
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m16 18l6-6l-6-6M8 6l-6 6l6 6"
+              />
+            </svg>
+            <svg class="floating-icon icon-database" viewBox="0 0 24 24">
+              <ellipse
+                cx="12"
+                cy="5"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                rx="9"
+                ry="3"
+              />
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 5v14A9 3 0 0 0 12 22a9 3 0 0 0 9-3V5"
+              />
+            </svg>
+            <svg class="floating-icon icon-smartphone" viewBox="0 0 24 24">
+              <rect
+                width="14"
+                height="20"
+                x="5"
+                y="2"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                rx="2"
+                ry="2"
+              />
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 18h.01"
+              />
+            </svg>
+            <svg class="floating-icon icon-server" viewBox="0 0 24 24">
+              <rect
+                width="20"
+                height="8"
+                x="2"
+                y="2"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                rx="2"
+                ry="2"
+              />
+              <rect
+                width="20"
+                height="8"
+                x="2"
+                y="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                rx="2"
+                ry="2"
+              />
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 6h.01M6 18h.01"
+              />
+            </svg>
+          </div>
+        </div>
+                  <div class="scroll-indicator">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m6 9l6 6l6-6"
+              />
+            </svg>
+          </div>
+      </section>
+        <section id="about" class="content-section">
+        <div class="container">
+          <div class="grid-2-col">
+            <!-- Left Side: Profile Card -->
+            <div class="profile-card-wrapper">
+              <div class="profile-card">
+                <img src="https://placehold.co/120x120/020617/22d3ee?text=HC" alt="Hank Cheng 個人頭像" class="profile-img">
+                <p class="profile-tagline">我熱衷於透過程式碼解決問題，並在網路上分享技術內容。</p>
+                <div class="profile-tags">
+                  <span class="profile-tag">後端開發</span>
+                  <span class="profile-tag">Java 開發者</span>
+                  <span class="profile-tag">技術分享者</span>
+                </div>
+                <div class="stats">
+                  <p><strong>3+</strong> 年學習經驗</p>
+                  <p><strong>10+</strong> 專案作品</p>
+                  <p><strong>5k+</strong> 技術文章瀏覽</p>
+                </div>
+                <div class="social-icons">
+                  <a href="#" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                  <a href="#" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                  <a href="#" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right Side: About Text -->
+            <div class="about-text">
+              <h3>Hello 👋</h3>
+              <p>
+                我是 Hank，一位位於台灣的 Java 軟體工程師。我從 2021 年開始使用 Java 和 Spring Boot 進行後端開發。我是一位充滿熱情的 Java 愛好者，並且對寫出乾淨、高效的程式碼有著極大的熱情。
+              </p>
+              <p>
+                我最喜歡的活動之一是在技術社群中教育和指導他人，幫助他們發揮潛力並深化我的知識。您可以在我的 <a href="#">技術部落格</a> 上找到更多相關內容。
+              </p>
+              <p>
+                我對於參與 Spring Boot 和雲端原生相關的專案抱持開放態度。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="portfolio" class="content-section dark">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">作品集</h2>
+            <p class="section-subtitle">精選專案展示，展現技術實力與創新思維</p>
+          </div>
+          <div class="portfolio-carousel-container">
+            <div class="portfolio-carousel">
+            <div class="portfolio-card">
+              <div class="card group">
+                <div class="card-image-container">
+                  <img
+                    src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop"
+                    alt="電商平台"
+                    class="card-image"
+                  />
+                  <div class="card-image-overlay"></div>
+                  <a href="#" class="card-link-button">
+                    <svg class="icon-sm" viewBox="0 0 24 24">
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6m4-3h6v6m-11 5L21 3"
+                      />
+                    </svg>
+                  </a>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title-small">電商平台</h3>
+                  <p class="card-description">
+                    現代化的電商解決方案，具備完整的購物車、支付系統與後台管理功能
+                  </p>
+                  <div class="tech-tags">
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">MongoDB</span>
+                    <span class="tech-tag">Stripe</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="portfolio-card">
+              <div class="card group">
+                <div class="card-image-container">
+                  <img
+                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=300&fit=crop"
+                    alt="企業管理系統"
+                    class="card-image"
+                  />
+                  <div class="card-image-overlay"></div>
+                  <a href="#" class="card-link-button">
+                    <svg class="icon-sm" viewBox="0 0 24 24">
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6m4-3h6v6m-11 5L21 3"
+                      />
+                    </svg>
+                  </a>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title-small">企業管理系統</h3>
+                  <p class="card-description">
+                    全方位的企業資源規劃系統，提升營運效率與數據分析能力
+                  </p>
+                  <div class="tech-tags">
+                    <span class="tech-tag">Vue.js</span>
+                    <span class="tech-tag">Express</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">Docker</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="portfolio-card">
+              <div class="card group">
+                <div class="card-image-container">
+                  <img
+                    src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&h=300&fit=crop"
+                    alt="行動應用程式"
+                    class="card-image"
+                  />
+                  <div class="card-image-overlay"></div>
+                  <a href="#" class="card-link-button">
+                    <svg class="icon-sm" viewBox="0 0 24 24">
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6m4-3h6v6m-11 5L21 3"
+                      />
+                    </svg>
+                  </a>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title-small">行動應用程式</h3>
+                  <p class="card-description">
+                    跨平台行動應用，提供流暢的使用者體驗與即時通訊功能
+                  </p>
+                  <div class="tech-tags">
+                    <span class="tech-tag">React Native</span>
+                    <span class="tech-tag">Firebase</span>
+                    <span class="tech-tag">Redux</span>
+                    <span class="tech-tag">WebRTC</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="portfolio-card">
+              <div class="card group">
+                <div class="card-image-container">
+                  <img
+                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop"
+                    alt="數據分析儀表板"
+                    class="card-image"
+                  />
+                  <div class="card-image-overlay"></div>
+                  <a href="#" class="card-link-button">
+                    <svg class="icon-sm" viewBox="0 0 24 24">
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6m4-3h6v6m-11 5L21 3"
+                      />
+                    </svg>
+                  </a>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title-small">數據分析儀表板</h3>
+                  <p class="card-description">
+                    即時數據視覺化平台，支援多種圖表類型與自定義報表生成
+                  </p>
+                  <div class="tech-tags">
+                    <span class="tech-tag">D3.js</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          <div class="portfolio-indicators">
+            <div class="indicator active"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tech-stack" class="content-section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">技術棧</h2>
+            <p class="section-subtitle">
+              掌握多種現代化開發技術，持續學習與精進
+            </p>
+          </div>
+          <div class="grid-4-col"></div>
+        </div>
+      </section>
+
+      <section id="contact" class="content-section dark">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">聯絡我</h2>
+            <p class="section-subtitle">
+              有任何專案合作或技術討論，歡迎與我聯繫
+            </p>
+          </div>
+          <div class="contact-simple">
+            <div class="contact-info-list">
+              <a href="mailto:llamohank@gmail.com" class="contact-info-item contact-link">
+                <div class="contact-icon-wrapper mail">
+                  <svg class="icon-md" viewBox="0 0 24 24">
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm-2 2l8 5l8-5"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h4>電子郵件</h4>
+                  <p>llamohank@gmail.com</p>
+                </div>
+              </a>
+
+              <a href="https://github.com/tche0043" target="_blank" class="contact-info-item contact-link">
+                <div class="contact-icon-wrapper github">
+                  <svg class="icon-md" viewBox="0 0 24 24">
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h4>GitHub</h4>
+                  <p>github.com/tche0043</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
