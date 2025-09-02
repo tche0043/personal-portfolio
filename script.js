@@ -58,28 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Data for Dynamic Content ---
-  const skills = [
-    {
-      name: "Frontend Development",
-      level: 95,
-      icon: `<svg class="icon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 18l6-6l-6-6M8 6l-6 6l6 6"/></svg>`,
-    },
-    {
-      name: "Backend Development",
-      level: 88,
-      icon: `<svg class="icon" viewBox="0 0 24 24"><rect width="20" height="8" x="2" y="2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2" ry="2"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6h.01M6 18h.01"/></svg>`,
-    },
-    {
-      name: "Mobile Development",
-      level: 82,
-      icon: `<svg class="icon" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2" ry="2"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01"/></svg>`,
-    },
-    {
-      name: "UI/UX Design",
-      level: 78,
-      icon: `<svg class="icon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 3l-8.5 8.5a5 5 0 1 0 7 7l8.5-8.5a5 5 0 1 0-7-7z"/></svg>`,
-    },
-  ];
 
   const techStacks = [
     { name: "React", color: "from-blue-400 to-cyan-400", icon: "⚛️" },
@@ -97,25 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   // --- Dynamic Content Injection ---
-  const skillsContainer = document.querySelector(".skills-container");
-  if (skillsContainer) {
-    skills.forEach((skill) => {
-      const skillHTML = `
-              <div class="skill-item">
-                  <div class="skill-header">
-                      <div class="skill-info">
-                          ${skill.icon}
-                          <span class="skill-name">${skill.name}</span>
-                      </div>
-                      <span class="skill-level">${skill.level}%</span>
-                  </div>
-                  <div class="skill-bar-bg">
-                      <div class="skill-bar-fg" data-level="${skill.level}"></div>
-                  </div>
-              </div>`;
-      skillsContainer.innerHTML += skillHTML;
-    });
-  }
 
   const techGrid = document.querySelector("#tech-stack .grid-4-col");
   if (techGrid) {
@@ -125,11 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="card">
                       <div class="tech-icon">${tech.icon}</div>
                       <h3 class="tech-name">${tech.name}</h3>
-                      <div class="tech-color-bar" style="background: linear-gradient(to right, var(--${tech.color
-                        .split(" ")[0]
-                        .replace("from-", "")}), var(--${tech.color
-        .split(" ")[1]
-        .replace("to-", "")}));"></div>
                   </div>
               </div>`;
       techGrid.innerHTML += techHTML;
@@ -264,19 +218,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 
-  // Skill bars animation
-  document.querySelectorAll(".skill-bar-fg").forEach((bar) => {
-    gsap.to(bar, {
-      width: `${bar.dataset.level}%`,
-      duration: 1.5,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: bar,
-        start: "top 85%",
-        toggleActions: "play none none reverse",
-      },
-    });
-  });
 
   // Portfolio Carousel Animation with Drag Support
   const portfolioCarousel = document.querySelector(".portfolio-carousel");

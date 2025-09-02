@@ -22,6 +22,7 @@ npm-debug.log*
 *.tmp
 *.temp
 
-# AI files
+# Documentation
+docs/
+
 .claude/
-CLAUDE.md
