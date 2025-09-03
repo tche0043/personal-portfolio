@@ -13,8 +13,8 @@ export class PortfolioCarousel {
 
     // GSAP 與動畫狀態
     this.portfolioTl = null;
-    this.wrap = null; // ★ GSAP 官方的 wrap 函式
-    this.xSetter = null; // ★ 新增：高效能的 GSAP quickSetter
+    this.wrap = null;
+    this.xSetter = null;
 
     // 尺寸與位置
     this.cardWidth = 0;
@@ -90,7 +90,7 @@ export class PortfolioCarousel {
     const clones = this.originalCards.map((card) => card.cloneNode(true));
     this.carousel.append(...clones);
 
-    // ★ 新增：初始化 quickSetter
+    // 初始化 quickSetter
     this.xSetter = gsap.quickSetter(this.carousel, "x", "px");
 
     this.calculateDimensions();
@@ -185,7 +185,7 @@ export class PortfolioCarousel {
       return;
 
     const now = performance.now();
-    
+
     // 節流：最多每16ms更新一次（60fps）
     if (now - this.lastUpdateTime < 16) return;
     this.lastUpdateTime = now;
@@ -203,12 +203,15 @@ export class PortfolioCarousel {
     ) {
       // 使用 DocumentFragment 批量更新，減少重排
       const fragment = document.createDocumentFragment();
-      const tempContainer = document.createElement('div');
-      
+      const tempContainer = document.createElement("div");
+
       this.indicators.forEach((indicator, index) => {
         if (index === activeIndex && !indicator.classList.contains("active")) {
           indicator.classList.add("active");
-        } else if (index !== activeIndex && indicator.classList.contains("active")) {
+        } else if (
+          index !== activeIndex &&
+          indicator.classList.contains("active")
+        ) {
           indicator.classList.remove("active");
         }
       });
@@ -360,7 +363,7 @@ export class PortfolioCarousel {
 
     // 移除事件監聽器
     window.removeEventListener("resize", this.boundResizeHandler);
-    
+
     // 清理引用
     this.carousel = null;
     this.container = null;

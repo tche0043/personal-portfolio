@@ -14,7 +14,7 @@ export class AnimationManager {
       return;
     }
 
-    this.setupBackgroundAnimations();
+    this.setupDoodoRotation();
     this.setupHeroAnimations(); 
     this.setupScrollAnimations();
     this.setupTechHoverAnimations();
@@ -25,69 +25,6 @@ export class AnimationManager {
       typeof gsap !== "undefined" &&
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches
     );
-  }
-
-  setupBackgroundAnimations() {
-    this.setupOrbTracking();
-    this.setupSVGPaths();
-    this.setupDoodoRotation();
-  }
-
-  setupOrbTracking() {
-    const orbs = [document.getElementById("orb1"), document.getElementById("orb2")];
-    if (!orbs.every(Boolean)) return;
-
-    const setters = orbs.map(orb => ({
-      x: gsap.quickSetter(orb, "x", "px"),
-      y: gsap.quickSetter(orb, "y", "px")
-    }));
-    
-    let rafId = null;
-    const handleMouseMove = (e) => {
-      if (rafId) return;
-      
-      rafId = requestAnimationFrame(() => {
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
-        
-        setters[0].x(x * 100);
-        setters[0].y(y * 100);
-        setters[1].x(x * -80);
-        setters[1].y(y * -60);
-        
-        rafId = null;
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    this.cleanupCallbacks.push(() => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      if (rafId) cancelAnimationFrame(rafId);
-    });
-  }
-
-  setupSVGPaths() {
-    const paths = ["#svg-path-1", "#svg-path-2"].map(id => document.querySelector(id));
-    const durations = [CONFIG.ANIMATION.SVG_PATH_DURATION_1, CONFIG.ANIMATION.SVG_PATH_DURATION_2];
-    const delays = [0, CONFIG.ANIMATION.SVG_PATH_DELAY];
-    
-    paths.forEach((path, i) => {
-      if (path) {
-        path.style.strokeDasharray = "1000";
-        gsap.fromTo(path,
-          { strokeDashoffset: 1000 },
-          {
-            strokeDashoffset: 0,
-            duration: durations[i],
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: delays[i],
-            force3D: true
-          }
-        );
-      }
-    });
   }
 
   setupDoodoRotation() {
@@ -136,7 +73,7 @@ export class AnimationManager {
   setupScrollAnimations() {
     const animations = [
       {
-        selector: ".profile-card-wrapper",
+        selector: ".profile-card",
         initial: { y: 50, opacity: 0 },
         target: { y: 0, opacity: 1 },
         start: CONFIG.SCROLL_TRIGGER.ABOUT_START
@@ -157,7 +94,7 @@ export class AnimationManager {
         start: CONFIG.SCROLL_TRIGGER.PORTFOLIO_START
       },
       {
-        selector: ".contact-simple",
+        selector: ".contact-info-list",
         initial: { opacity: 0 },
         target: { opacity: 1 },
         start: "top bottom-=100px"

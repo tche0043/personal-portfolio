@@ -23,9 +23,6 @@ export const CONFIG = {
     TECH_HOVER_Y: -6,
     ICON_HOVER_SCALE: 1.1,
     ICON_HOVER_ROTATION: 5,
-    SVG_PATH_DURATION_1: 3,
-    SVG_PATH_DURATION_2: 4,
-    SVG_PATH_DELAY: 1
   },
 
   // Carousel settings
@@ -34,12 +31,12 @@ export const CONFIG = {
     DESKTOP_CARD_WIDTH: 350,
     GAP: {
       MOBILE: 24,
-      DESKTOP: 32
+      DESKTOP: 32,
     },
     AUTO_SCROLL_DURATION: 60,
     DRAG_SENSITIVITY: 0.5,
     RESUME_DELAY: 3000,
-    INDICATOR_ANIMATION_DURATION: 0.8
+    INDICATOR_ANIMATION_DURATION: 0.8,
   },
 
   // Responsive breakpoints
@@ -49,7 +46,7 @@ export const CONFIG = {
     TABLET_MAX: 1023,
     DESKTOP_MIN: 1024,
     DESKTOP_MAX: 1511,
-    LARGE_DESKTOP_MIN: 1512
+    LARGE_DESKTOP_MIN: 1512,
   },
 
   // ScrollTrigger settings
@@ -60,25 +57,102 @@ export const CONFIG = {
     REVERSE_TOGGLE_ACTIONS: "play none none reverse",
     // ★ 新增：各區域特定觸發位置
     ABOUT_START: "top 75%",
-    PORTFOLIO_START: "top 75%", 
+    PORTFOLIO_START: "top 75%",
     TECH_STACK_START: "top 70%",
-    CONTACT_START: "top 80%"
+    CONTACT_START: "top 80%",
   },
+
+  // Portfolio data - 作品集數據
+  PORTFOLIO_PROJECTS: [
+    {
+      id: "ecommerce",
+      title: "電商平台",
+      description:
+        "現代化的電商解決方案，具備完整的購物車、支付系統與後台管理功能",
+      image:
+        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop",
+      link: "#",
+      technologies: ["React", "Node.js", "MongoDB", "Stripe"],
+    },
+    {
+      id: "enterprise",
+      title: "企業管理系統",
+      description: "全方位的企業資源規劃系統，提升營運效率與數據分析能力",
+      image:
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=300&fit=crop",
+      link: "#",
+      technologies: ["Vue.js", "Express", "PostgreSQL", "Docker"],
+    },
+    {
+      id: "mobile-app",
+      title: "行動應用程式",
+      description: "跨平台行動應用，提供流暢的使用者體驗與即時通訊功能",
+      image:
+        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&h=300&fit=crop",
+      link: "#",
+      technologies: ["React Native", "Firebase", "Redux", "WebRTC"],
+    },
+    {
+      id: "dashboard",
+      title: "數據分析儀表板",
+      description: "即時數據視覺化平台，支援多種圖表類型與自定義報表生成",
+      image:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop",
+      link: "#",
+      technologies: ["D3.js", "Python", "PostgreSQL"],
+    },
+  ],
 
   // Tech stack data - Java軟體工程師技術棧
   TECH_STACKS: [
-    { name: "Java", color: "from-orange-500 to-red-600", icon: "☕" },
-    { name: "Spring Boot", color: "from-green-400 to-green-600", icon: "🍃" },
-    { name: "Spring Security", color: "from-green-500 to-green-700", icon: "🔐" },
-    { name: "MySQL", color: "from-blue-500 to-blue-700", icon: "🐬" },
-    { name: "PostgreSQL", color: "from-blue-600 to-indigo-600", icon: "🐘" },
-    { name: "Docker", color: "from-blue-400 to-blue-600", icon: "🐳" },
-    { name: "AWS", color: "from-orange-400 to-orange-500", icon: "☁️" },
-    { name: "Git", color: "from-gray-600 to-gray-800", icon: "📝" },
-    { name: "Maven", color: "from-purple-500 to-purple-700", icon: "🏗️" },
-    { name: "JUnit", color: "from-red-400 to-red-600", icon: "🧪" },
-    { name: "Redis", color: "from-red-500 to-red-600", icon: "🔴" },
-    { name: "Microservices", color: "from-cyan-400 to-cyan-600", icon: "🔧" }
+    {
+      name: "HTML",
+      icon: "<img src='assets/html5-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "CSS",
+      icon: "<img src='assets/css-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "JavaScript",
+      icon: "<img src='assets/javascript-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "Java",
+      icon: "<img src='assets/java-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "Python",
+      icon: "<img src='assets/python-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "Go",
+      icon: "<img src='assets/golang-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "Swift",
+      icon: "<img src='assets/swift-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "R",
+      icon: "<img src='assets/r-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "SQL SERVER",
+      icon: "<img src='assets/sqlServer-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "MongoDB",
+      icon: "<img src='assets/mongodb-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "Git",
+      icon: "<img src='assets/git-logo.svg' class='icon-lg'/>",
+    },
+    {
+      name: "Docker",
+      icon: "<img src='assets/docker-logo.svg' class='icon-lg'/>",
+    },
   ],
 
   // CSS color variables (for JS animations)
@@ -91,62 +165,65 @@ export const CONFIG = {
     WHITE: "#ffffff",
     SLATE_600: "#475569",
     SLATE_700: "#334155",
-    SLATE_800: "#1e293b"
+    SLATE_800: "#1e293b",
   },
 
   // Performance settings
   PERFORMANCE: {
     MOUSE_THROTTLE: true,
     USE_TRANSFORM_3D: true,
-    WILL_CHANGE_ELEMENTS: ['.floating-icon', '.doodo-background', '.orb'],
-    STAGGER_ANIMATIONS: true
+    WILL_CHANGE_ELEMENTS: [".floating-icon", ".doodo-background"],
+    STAGGER_ANIMATIONS: true,
   },
 
   // Selectors (commonly used)
   SELECTORS: {
-    NAV_TOGGLE: '.nav-toggle',
-    NAV_MENU: '.nav-menu',
-    NAV_LINKS: '.nav-link',
-    HERO_TITLE: '.hero-title',
-    HERO_BUTTONS: '.hero-buttons',
-    FLOATING_ICONS: '.floating-icon',
-    DOODO_BACKGROUND: '.doodo-background',
-    PORTFOLIO_CAROUSEL: '.portfolio-carousel',
-    PORTFOLIO_CARDS: '.portfolio-card',
-    PORTFOLIO_CONTAINER: '.portfolio-carousel-container',
-    INDICATORS: '.portfolio-indicators .indicator',
-    TECH_GRID: '#tech-stack .tech-grid',
-    TECH_ITEMS: '.tech-item'
-  }
+    NAV_TOGGLE: ".nav-toggle",
+    NAV_MENU: ".nav-menu",
+    NAV_LINKS: ".nav-link",
+    HERO_TITLE: ".hero-title",
+    HERO_BUTTONS: ".hero-buttons",
+    FLOATING_ICONS: ".floating-icon",
+    DOODO_BACKGROUND: ".doodo-background",
+    PORTFOLIO_CAROUSEL: ".portfolio-carousel",
+    PORTFOLIO_CARDS: ".portfolio-card",
+    PORTFOLIO_CONTAINER: ".portfolio-carousel-container",
+    INDICATORS: ".portfolio-indicators .indicator",
+    TECH_GRID: "#tech-stack .tech-grid",
+    TECH_ITEMS: ".tech-item",
+  },
 };
 
 // Utility functions for responsive calculations
 export const UTILS = {
   // Check if current viewport is mobile
   isMobile: () => window.innerWidth <= CONFIG.BREAKPOINTS.MOBILE_MAX,
-  
+
   // Check if current viewport is tablet
-  isTablet: () => window.innerWidth >= CONFIG.BREAKPOINTS.TABLET_MIN && 
-                  window.innerWidth <= CONFIG.BREAKPOINTS.TABLET_MAX,
-  
+  isTablet: () =>
+    window.innerWidth >= CONFIG.BREAKPOINTS.TABLET_MIN &&
+    window.innerWidth <= CONFIG.BREAKPOINTS.TABLET_MAX,
+
   // Check if current viewport is desktop
   isDesktop: () => window.innerWidth >= CONFIG.BREAKPOINTS.DESKTOP_MIN,
-  
+
   // Get card width based on viewport
-  getCardWidth: () => UTILS.isMobile() ? 
-    CONFIG.CAROUSEL.MOBILE_CARD_WIDTH : CONFIG.CAROUSEL.DESKTOP_CARD_WIDTH,
-  
+  getCardWidth: () =>
+    UTILS.isMobile()
+      ? CONFIG.CAROUSEL.MOBILE_CARD_WIDTH
+      : CONFIG.CAROUSEL.DESKTOP_CARD_WIDTH,
+
   // Get gap based on viewport
-  getGap: () => UTILS.isMobile() ? 
-    CONFIG.CAROUSEL.GAP.MOBILE : CONFIG.CAROUSEL.GAP.DESKTOP,
-  
+  getGap: () =>
+    UTILS.isMobile() ? CONFIG.CAROUSEL.GAP.MOBILE : CONFIG.CAROUSEL.GAP.DESKTOP,
+
   // Throttle function for performance
   throttle: (func, delay) => {
     let timeoutId;
     let lastExecTime = 0;
     return function (...args) {
       const currentTime = Date.now();
-      
+
       if (currentTime - lastExecTime > delay) {
         func.apply(this, args);
         lastExecTime = currentTime;
@@ -158,5 +235,5 @@ export const UTILS = {
         }, delay - (currentTime - lastExecTime));
       }
     };
-  }
+  },
 };
