@@ -14,6 +14,16 @@
   --blue-400: #60a5fa;
   --blue-500: #3b82f6;
   --purple-400: #c084fc;
+
+  /* Optimized repeated values */
+  --cyan-alpha-10: rgba(6, 182, 212, 0.1);
+  --cyan-alpha-20: rgba(6, 182, 212, 0.2);
+  --cyan-alpha-50: rgba(6, 182, 212, 0.5);
+  --slate-bg-dark: #0d1325;
+  --hover-cyan: #0891b2;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 0 15px rgba(6, 182, 212, 0.25);
 }
 
 /* --- Base & Typography --- */
@@ -118,6 +128,7 @@ body {
   z-index: 10;
 }
 
+/* Utility Classes */
 .text-center {
   text-align: center;
 }
@@ -134,16 +145,17 @@ body {
   width: 100%;
 }
 
+.icon-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
 .icon {
   width: 1rem;
   height: 1rem;
   margin-right: 0.5rem;
   display: inline-block;
   vertical-align: middle;
-}
-.icon-sm {
-  width: 1rem;
-  height: 1rem;
 }
 .icon-md {
   width: 1.5rem;
@@ -158,6 +170,9 @@ body {
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
+  /* ★ 性能優化：CSS containment 和硬體加速 */
+  contain: layout style paint;
+  will-change: transform;
 }
 .animated-grid {
   position: absolute;
@@ -171,8 +186,11 @@ body {
   position: absolute;
   border-radius: 9999px;
   filter: blur(80px);
+  /* ★ 性能優化：最佳化變換處理 */
   will-change: transform;
   transform: translate3d(0, 0, 0);
+  contain: layout style paint;
+  backface-visibility: hidden;
 }
 #orb1 {
   width: 24rem;
@@ -247,20 +265,19 @@ body {
 .btn-primary {
   background: linear-gradient(to right, var(--cyan-500), var(--blue-500));
   color: var(--white);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-card);
 }
 .btn-primary:hover {
-  background: linear-gradient(to right, #0891b2, #2563eb);
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+  background: linear-gradient(to right, var(--hover-cyan), #2563eb);
+  box-shadow: var(--shadow-hover);
 }
 .btn-outline {
   background: transparent;
-  border: 1px solid rgba(6, 182, 212, 0.5);
+  border: 1px solid var(--cyan-alpha-50);
   color: var(--cyan-400);
 }
 .btn-outline:hover {
-  background-color: rgba(6, 182, 212, 0.1);
+  background-color: var(--cyan-alpha-10);
 }
 
 /* --- Floating Icons --- */
@@ -272,11 +289,17 @@ body {
   height: 150px;
   pointer-events: none;
   z-index: 1;
+  /* ★ 性能優化：floating icons 容器最佳化 */
+  contain: layout style paint;
 }
 .floating-icon {
   position: absolute;
   width: 2rem;
   height: 2rem;
+  /* ★ 性能優化：floating icons 動畫最佳化 */
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 .icon-code {
   top: 20px;
@@ -343,9 +366,12 @@ body {
   left: 10%;
   width: 97%;
   height: 97%;
+  /* ★ 性能優化：旋轉動畫最佳化 */
   will-change: transform;
   transform: translate3d(0, 0, 0);
   object-fit: contain;
+  contain: layout style paint;
+  backface-visibility: hidden;
 }
 .doodo-person {
   z-index: 2;
@@ -365,7 +391,7 @@ body {
   position: relative;
   padding: 2rem;
   border-radius: 1rem;
-  background-color: #0d1325;
+  background-color: var(--slate-bg-dark);
   overflow: hidden;
 }
 
@@ -448,22 +474,7 @@ body {
   font-weight: 700;
 }
 
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-}
-
-.social-icons a {
-  color: var(--gray-400);
-  font-size: 1.25rem;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.social-icons a:hover {
-  color: var(--cyan-400);
-  transform: translateY(-2px);
-}
+/* ★ social-icons 相關樣式已移除，HTML 中未使用 */
 
 .about-text h3 {
   font-size: 2.5rem;
@@ -498,7 +509,7 @@ body {
   position: relative;
   background-color: var(--slate-900);
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden; /* ★ 防止動畫觸發前出現滾動條 */
 }
 .content-section.dark {
   background-color: var(--slate-950);
@@ -530,19 +541,7 @@ body {
   gap: 3rem;
   align-items: center;
 }
-.grid-3-col {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 2rem;
-}
-
-.grid-4-col {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  overflow: visible;
-  padding: 1rem 0;
-}
+/* ★ grid-3-col 和 grid-4-col 已移除，HTML 中未使用 */
 
 .tech-grid {
   display: grid;
@@ -550,6 +549,11 @@ body {
   gap: 1.5rem;
   overflow: visible;
   padding: 1rem 0;
+}
+
+/* ★ 確保 tech items 在 JavaScript 載入前可見 */
+.tech-item {
+  opacity: 1;
 }
 
 /* --- Card --- */
@@ -561,19 +565,19 @@ body {
   backdrop-filter: blur(4px);
   height: 100%;
 }
-.card-title {
-  font-size: 1.5rem;
+.card-title,
+.card-title-small {
   font-weight: 700;
   color: var(--white);
-  margin-bottom: 1.5rem;
   margin-top: 0;
+}
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 .card-title-small {
   font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--white);
   margin-bottom: 0.75rem;
-  margin-top: 0;
 }
 .card-description {
   color: var(--gray-300);
@@ -600,15 +604,14 @@ body {
 .portfolio-carousel {
   display: flex;
   gap: 2rem;
-  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .portfolio-card {
   flex: 0 0 auto;
   width: min(350px, calc(100vw - 4rem));
   margin-bottom: 1rem;
-  will-change: transform, opacity;
-  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 /* Portfolio Indicators */
@@ -649,7 +652,7 @@ body {
   transition: border-color 0.3s ease;
 }
 .portfolio-card .card:hover {
-  border-color: rgba(6, 182, 212, 0.5);
+  border-color: var(--cyan-alpha-50);
 }
 .card-image-container {
   position: relative;
@@ -689,7 +692,7 @@ body {
   opacity: 1;
 }
 .card-link-button:hover {
-  background-color: #0891b2;
+  background-color: var(--hover-cyan);
 }
 .card-content {
   padding: 1.5rem;
@@ -701,12 +704,12 @@ body {
 }
 .tech-tag {
   padding: 0.25rem 0.75rem;
-  background-color: rgba(6, 182, 212, 0.1);
+  background-color: var(--cyan-alpha-10);
   color: var(--cyan-400);
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 500;
-  border: 1px solid rgba(6, 182, 212, 0.2);
+  border: 1px solid var(--cyan-alpha-20);
 }
 
 /* --- Tech Stack Section --- */
@@ -733,6 +736,9 @@ body {
   justify-content: center;
   align-items: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  /* ★ 性能優化：tech card 懸停最佳化 */
+  will-change: transform, box-shadow, border-color;
+  backface-visibility: hidden;
 }
 
 .tech-item .card::before {
@@ -772,41 +778,26 @@ body {
 
 /* --- Contact Section --- */
 .contact-form-container,
-.contact-info-container {
+.contact-info-container,
+.contact-info-list {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-.contact-form .form-group {
-  margin-bottom: 1.5rem;
-}
-.contact-form label {
-  display: block;
-  color: var(--gray-300);
-  margin-bottom: 0.5rem;
-}
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  box-sizing: border-box;
-  background-color: rgba(71, 85, 105, 0.5);
-  border: 1px solid var(--slate-600);
-  color: var(--white);
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-}
-.contact-form input:focus,
-.contact-form textarea:focus {
-  outline: none;
-  border-color: var(--cyan-500);
+.contact-info-list {
+  gap: 1.5rem;
 }
 
 /* Simplified Contact Layout */
 .contact-simple {
   max-width: 600px;
   margin: 0 auto;
+  overflow: hidden; /* ★ 防止子元素動畫溢出時出現滾動條 */
+  opacity: 0;
+}
+
+.contact-info-list {
+  opacity: 0;
 }
 
 .contact-simple .contact-info-list {
@@ -819,15 +810,16 @@ body {
 .contact-link {
   text-decoration: none;
   color: inherit;
-  transition: all 0.3s ease;
+  /* ★ 修改：避免與 GSAP 動畫衝突，只對顏色和背景做 transition */
+  transition: background-color 0.3s ease, color 0.3s ease;
   border-radius: 0.5rem;
   padding: 1rem;
   margin: -1rem;
 }
 
 .contact-link:hover {
-  background-color: rgba(6, 182, 212, 0.1);
-  transform: translateY(-2px);
+  background-color: var(--cyan-alpha-10);
+  /* ★ 移除 transform 避免與 GSAP 的 y 動畫衝突 */
 }
 
 .contact-link:hover h4 {
@@ -835,13 +827,8 @@ body {
 }
 
 .contact-link:hover .contact-icon-wrapper {
-  background-color: rgba(6, 182, 212, 0.2);
+  background-color: var(--cyan-alpha-20);
   border-color: var(--cyan-500);
-}
-.contact-info-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
 }
 .contact-info-item {
   display: flex;
@@ -871,11 +858,11 @@ body {
   font-weight: 500;
   margin: 0 0 0.25rem 0;
 }
-.contact-info-item p,
-.working-hours p {
+.contact-info-item p {
   color: var(--gray-300);
   margin: 0;
 }
+/* ★ working-hours 相關樣式已移除，HTML 中未使用 */
 
 /* Mobile Styles (320px - 767px) */
 @media (max-width: 767px) {
@@ -890,15 +877,15 @@ body {
 
   .nav-menu {
     position: fixed;
-    top: 65px;
+    top: 78.5px;
     right: -100%;
     width: 100%;
-    height: calc(100vh - 65px);
+    height: calc(100vh - 78.5px);
     flex-direction: column;
     align-items: center;
     padding-top: 3rem;
     gap: 2.5rem;
-    background-color: var(--slate-950);
+    background-color: var(--slate-bg-dark);
     transition: right 0.3s ease-in-out;
   }
 
@@ -955,10 +942,7 @@ body {
     height: 8px;
   }
 
-  .grid-4-col {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
+  /* ★ grid-4-col 移動端樣式已移除 */
   .hero-doodo {
     display: none;
   }
@@ -990,14 +974,7 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .grid-3-col {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .grid-4-col {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.75rem;
-  }
+  /* ★ grid-3-col 和 grid-4-col 平板樣式已移除 */
   .tech-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.75rem;
@@ -1009,7 +986,24 @@ body {
   }
 }
 
-/* Desktop Styles (1024px - 1511px) */
+/* Desktop & Large Screen Styles */
+@media (min-width: 1024px) {
+  .hero-buttons,
+  .tech-grid {
+    flex-direction: row;
+  }
+
+  .tech-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .contact-simple .contact-info-list {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
 @media (min-width: 1024px) and (max-width: 1511px) {
   .container {
     max-width: 1000px;
@@ -1020,10 +1014,6 @@ body {
     font-size: 4rem;
   }
 
-  .hero-buttons {
-    flex-direction: row;
-  }
-
   .section-title {
     font-size: 3.75rem;
   }
@@ -1032,23 +1022,7 @@ body {
     max-width: 320px;
   }
 
-  .grid-3-col {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .grid-4-col {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-  }
-
-  .tech-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-  }
-
   .contact-simple .contact-info-list {
-    flex-direction: row;
-    justify-content: center;
     gap: 4rem;
   }
 }
@@ -1058,24 +1032,8 @@ body {
     display: none;
   }
 
-  .grid-4-col {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-  }
-
-  .tech-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-  }
-
   .contact-simple .contact-info-list {
-    flex-direction: row;
-    justify-content: center;
     gap: 6rem;
-  }
-
-  .hero-buttons {
-    flex-direction: row;
   }
 }
 
@@ -1084,37 +1042,30 @@ body {
     min-height: auto;
     padding-top: 7rem;
     padding-bottom: 4rem;
-    /* 將內容對齊頂部，而不是置中，避免被裁切 */
     align-items: flex-start;
   }
 
   .hero-title {
     margin-top: 0;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    text-align: center; /* 在橫向時置中標題 */
-  }
-
-  .hero-buttons {
-    justify-content: center; /* 在橫向時置中按鈕 */
+    margin-bottom: 3rem;
+    font-size: 3rem;
   }
 
   .hero-doodo,
-  .floating-icons-container,
   .scroll-indicator {
     display: none;
   }
 
-  /* 強制設定導覽列高度，使其在所有橫向手機上都保持一致 */
   .navbar {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
   }
-}
-/* @media (max-width: 767px) and (max-height: 550px) and (orientation: landscape) {
-  .nav-menu {
-    top: 60px;
-    height: calc(100vh - 60px);
-    overflow-y: auto;
+
+  @media (max-width: 767px) {
+    .nav-menu {
+      top: 54.5px;
+      height: 100vh;
+      gap: 1rem;
+    }
   }
-} */
+}

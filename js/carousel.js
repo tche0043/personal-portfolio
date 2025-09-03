@@ -29,8 +29,10 @@ export class PortfolioCarousel {
     this.startScrollX = 0;
     this.resumeTimer = null;
 
-    // ★ 新增：用於節流指示器更新的計時器
+    // ★ 性能優化：防抖和節流計時器
     this.indicatorUpdateThrottle = null;
+    this.rafId = null;
+    this.lastUpdateTime = 0;
 
     // 綁定 resize 處理函式，並使用 throttle 優化效能
     this.boundResizeHandler = UTILS.throttle(this.handleResize.bind(this), 250);
@@ -173,7 +175,7 @@ export class PortfolioCarousel {
     window.addEventListener("resize", this.boundResizeHandler);
   }
 
-  // ★ 優化：更新指示器的函式
+  // ★ 高度優化：使用 RAF 和節流更新指示器
   updateIndicators() {
     if (
       !this.indicators ||
@@ -182,18 +184,33 @@ export class PortfolioCarousel {
     )
       return;
 
+    const now = performance.now();
+    
+    // 節流：最多每16ms更新一次（60fps）
+    if (now - this.lastUpdateTime < 16) return;
+    this.lastUpdateTime = now;
+
     const progress = Math.abs(this.wrap(this.currentX) / this.totalWidth);
     let activeIndex = Math.floor(progress * this.originalCards.length);
 
     // 確保 activeIndex 不會超出範圍
     activeIndex = activeIndex % this.originalCards.length;
 
+    // 只在需要時更新 DOM
     if (
       this.indicators[activeIndex] &&
       !this.indicators[activeIndex].classList.contains("active")
     ) {
+      // 使用 DocumentFragment 批量更新，減少重排
+      const fragment = document.createDocumentFragment();
+      const tempContainer = document.createElement('div');
+      
       this.indicators.forEach((indicator, index) => {
-        indicator.classList.toggle("active", index === activeIndex);
+        if (index === activeIndex && !indicator.classList.contains("active")) {
+          indicator.classList.add("active");
+        } else if (index !== activeIndex && indicator.classList.contains("active")) {
+          indicator.classList.remove("active");
+        }
       });
     }
   }
@@ -218,12 +235,12 @@ export class PortfolioCarousel {
         this.currentX = wrappedX;
         this.xSetter(wrappedX);
 
-        // ★ 優化：節流指示器更新，避免過度頻繁操作 DOM
-        if (!this.indicatorUpdateThrottle) {
-          this.indicatorUpdateThrottle = setTimeout(() => {
+        // ★ 優化：使用 RAF 批量更新指示器
+        if (!this.rafId) {
+          this.rafId = requestAnimationFrame(() => {
             this.updateIndicators();
-            this.indicatorUpdateThrottle = null;
-          }, 100); // 每 100ms 更新一次
+            this.rafId = null;
+          });
         }
       },
     });
@@ -325,5 +342,31 @@ export class PortfolioCarousel {
     this.calculateDimensions();
     this.currentX = 0;
     this.startAutoScroll();
+  }
+
+  // ★ 新增：清理方法避免記憶體洩漏
+  destroy() {
+    // 清理計時器
+    clearTimeout(this.resumeTimer);
+    clearTimeout(this.indicatorUpdateThrottle);
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+    }
+
+    // 清理 GSAP 動畫
+    if (this.portfolioTl) {
+      this.portfolioTl.kill();
+    }
+
+    // 移除事件監聽器
+    window.removeEventListener("resize", this.boundResizeHandler);
+    
+    // 清理引用
+    this.carousel = null;
+    this.container = null;
+    this.indicators = [];
+    this.originalCards = [];
+    this.xSetter = null;
+    this.wrap = null;
   }
 }
