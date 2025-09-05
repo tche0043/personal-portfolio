@@ -19,36 +19,13 @@ export class ContentManager {
 
   renderTechStack() {
     const techGrid = DOMUtils.safeQuerySelector(CONFIG.SELECTORS.TECH_GRID);
-    if (!techGrid) {
-      ErrorHandler.logWarning(
-        "ContentManager",
-        "Tech grid element not found, tech stack will not render"
-      );
-      return;
-    }
+    if (!techGrid) return;
 
     try {
-      if (!CONFIG.TECH_STACKS || !Array.isArray(CONFIG.TECH_STACKS)) {
-        ErrorHandler.logWarning(
-          "ContentManager",
-          "Tech stacks data not found or invalid"
-        );
-        return;
-      }
+      if (!CONFIG.TECH_STACKS || !Array.isArray(CONFIG.TECH_STACKS)) return;
 
-      // ★ 關鍵優化：使用 DocumentFragment 避免多次 DOM reflow
       const fragment = document.createDocumentFragment();
-
-      CONFIG.TECH_STACKS.forEach((tech, index) => {
-        if (!tech.name || !tech.icon) {
-          ErrorHandler.logWarning(
-            "ContentManager",
-            `Invalid tech stack item at index ${index}`,
-            tech
-          );
-          return;
-        }
-
+      CONFIG.TECH_STACKS.forEach((tech) => {
         const techItem = document.createElement("div");
         techItem.className = "tech-item";
         techItem.innerHTML = `
@@ -58,10 +35,7 @@ export class ContentManager {
             </div>`;
         fragment.appendChild(techItem);
       });
-
-      // 清空現有內容
       techGrid.innerHTML = "";
-      // 一次性將所有新元素附加到 DOM
       techGrid.appendChild(fragment);
     } catch (error) {
       ErrorHandler.logError("ContentManager.renderTechStack", error);
@@ -70,35 +44,31 @@ export class ContentManager {
 
   renderPortfolio() {
     const portfolioCarousel = DOMUtils.safeQuerySelector('.portfolio-carousel');
-    if (!portfolioCarousel) {
-      ErrorHandler.logWarning(
-        "ContentManager",
-        "Portfolio carousel element not found"
-      );
-      return;
-    }
+    if (!portfolioCarousel) return;
 
     try {
-      // 清空現有內容
       portfolioCarousel.innerHTML = "";
-      
-      // 使用 DocumentFragment 優化性能
       const fragment = document.createDocumentFragment();
-
-      CONFIG.PORTFOLIO_PROJECTS.forEach((project) => {
-        const projectCard = this.createProjectCard(project);
+      CONFIG.PORTFOLIO_PROJECTS.forEach((project, index) => {
+        const projectCard = this.createProjectCard(project, index);
         fragment.appendChild(projectCard);
       });
-
       portfolioCarousel.appendChild(fragment);
     } catch (error) {
       ErrorHandler.logError("ContentManager.renderPortfolio", error);
     }
   }
-
-  createProjectCard(project) {
+  
+  // ★ 優化：增加 index 參數並添加無障礙屬性
+  createProjectCard(project, index) {
     const article = document.createElement('article');
     article.className = 'portfolio-card';
+    // ★ 新增：無障礙屬性
+    article.setAttribute('role', 'group');
+    article.setAttribute('aria-roledescription', 'slide');
+    article.setAttribute('aria-label', `${index + 1} of ${CONFIG.PORTFOLIO_PROJECTS.length}: ${project.title}`);
+    // ★ 新增：預設將非第一個的卡片對螢幕閱讀器隱藏
+    article.setAttribute('aria-hidden', index !== 0);
     
     article.innerHTML = `
       <div class="card-image-container">
@@ -111,7 +81,7 @@ export class ContentManager {
           draggable="false"
         />
         <div class="card-image-overlay"></div>
-        <a href="${project.link}" class="card-link-button" aria-label="查看專案詳情">
+        <a href="${project.link}" target="_blank" rel="noopener noreferrer" class="card-link-button" aria-label="查看專案：${project.title} (在新分頁中開啟)">
           <svg class="icon" viewBox="0 0 24 24">
             <path
               fill="none"
@@ -138,37 +108,22 @@ export class ContentManager {
 
   renderPortfolioIndicators() {
     const indicatorsContainer = DOMUtils.safeQuerySelector('.portfolio-indicators');
-    if (!indicatorsContainer) {
-      ErrorHandler.logWarning(
-        "ContentManager",
-        "Portfolio indicators container not found"
-      );
-      return;
-    }
+    if (!indicatorsContainer) return;
 
     try {
-      // 清空現有指示器
       indicatorsContainer.innerHTML = "";
-      
-      // 使用 DocumentFragment 優化性能
       const fragment = document.createDocumentFragment();
-
       CONFIG.PORTFOLIO_PROJECTS.forEach((project, index) => {
-        const indicator = document.createElement('div');
+        const indicator = document.createElement('div'); // ★ 恢復為 div 樣式
         indicator.className = index === 0 ? 'indicator active' : 'indicator';
         indicator.setAttribute('data-index', index);
-        indicator.setAttribute('aria-label', `切換到${project.title}`);
+        indicator.setAttribute('aria-label', `切換到作品：${project.title}`);
         fragment.appendChild(indicator);
       });
-
       indicatorsContainer.appendChild(fragment);
-      
-      ErrorHandler.logInfo(
-        "ContentManager", 
-        `Successfully rendered ${CONFIG.PORTFOLIO_PROJECTS.length} portfolio indicators`
-      );
     } catch (error) {
       ErrorHandler.logError("ContentManager.renderPortfolioIndicators", error);
     }
   }
 }
+

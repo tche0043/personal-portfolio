@@ -126,6 +126,18 @@ span {
   color: var(--white);
 }
 
+.job-title-wrapper {
+  display: inline-block;
+  vertical-align: bottom; /* 確保與後方文字對齊 */
+  height: 1.2em; /* 設定一個高度以隱藏超出範圍的文字 */
+  overflow: hidden;
+  position: relative;
+}
+.job-title {
+  display: inline-block;
+  position: relative;
+}
+
 .floating-icon,
 .icon,
 .icon-md,
@@ -291,6 +303,10 @@ span {
   top: 70px;
   width: min(450px, 40vw);
   height: min(600px, 60vh);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .doodo-background {
@@ -304,6 +320,7 @@ span {
   transform: translate3d(0, 0, 0);
   object-fit: contain;
   contain: layout style paint;
+  user-select: none;
 }
 .doodo-person {
   z-index: 2;
@@ -314,6 +331,7 @@ span {
   width: 80%;
   height: 80%;
   object-fit: contain;
+  user-select: none;
 }
 #about .container {
   grid-template-columns: 1fr 2fr;
@@ -501,6 +519,7 @@ span {
   user-select: none;
   width: 100%;
   max-width: 100%;
+  touch-action: pan-y;
 }
 
 .portfolio-carousel {
