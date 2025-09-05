@@ -12,8 +12,8 @@ export const CONFIG = {
     FLOATING_ICON_DURATION: 2,
     FLOATING_ICON_STAGGER: 0.3,
     DOODO_ROTATION_DURATION: 30,
-    SECTION_ANIMATION_DURATION: 1.5, // ★ About 區域動畫持續時間
-    SECTION_ANIMATION_DELAY: 0.5, // ★ About 區域延遲時間
+    SECTION_ANIMATION_DURATION: 1.2, // ★ About 區域動畫持續時間
+    SECTION_ANIMATION_DELAY: 0.3, // ★ About 區域延遲時間
     TECH_STACK_DURATION: 1.8, // ★ 新增：Tech Stack 動畫持續時間
     TECH_STACK_STAGGER: 0.15, // ★ 新增：Tech Stack 動畫間隔
     PORTFOLIO_DURATION: 1.2, // ★ 新增：Portfolio 動畫持續時間
@@ -51,14 +51,14 @@ export const CONFIG = {
 
   // ScrollTrigger settings
   SCROLL_TRIGGER: {
-    START_POSITION: "top 90%", // ★ 一般觸發位置
+    START_POSITION: "top 90%",
     END_POSITION: "bottom 20%",
     TOGGLE_ACTIONS: "play none none none",
     REVERSE_TOGGLE_ACTIONS: "play none none reverse",
     // ★ 新增：各區域特定觸發位置
     ABOUT_START: "top 75%",
     PORTFOLIO_START: "top 75%",
-    TECH_STACK_START: "top 70%",
+    TECH_STACK_START: "top 90%",
     CONTACT_START: "top 80%",
   },
 
