@@ -507,6 +507,12 @@ span {
   display: flex;
   gap: 2rem;
 }
+.portfolio-carousel-container .portfolio-card * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
 
 .portfolio-indicators {
   display: flex;

@@ -108,6 +108,7 @@ export class ContentManager {
           class="card-image"
           width="500"
           height="300"
+          draggable="false"
         />
         <div class="card-image-overlay"></div>
         <a href="${project.link}" class="card-link-button" aria-label="查看專案詳情">
