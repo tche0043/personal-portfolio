@@ -320,7 +320,6 @@ span {
   transform: translate3d(0, 0, 0);
   object-fit: contain;
   contain: layout style paint;
-  user-select: none;
 }
 .doodo-person {
   z-index: 2;
@@ -331,7 +330,7 @@ span {
   width: 80%;
   height: 80%;
   object-fit: contain;
-  user-select: none;
+  pointer-events: none;
 }
 #about .container {
   grid-template-columns: 1fr 2fr;

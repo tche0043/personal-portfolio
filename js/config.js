@@ -35,7 +35,7 @@ export const CONFIG = {
     },
     AUTO_SCROLL_DURATION: 60,
     DRAG_SENSITIVITY: 1.2,
-    RESUME_DELAY: 3000,
+    RESUME_DELAY:1000,
     INDICATOR_ANIMATION_DURATION: 0.8,
   },
 
@@ -120,7 +120,7 @@ export const CONFIG = {
     },
     {
       name: "JavaScript",
-      icon: "<img src='assets/javascript-logo.svg' class='icon-lg'/>",
+      icon: "<img src='assets/javaScript-logo.svg' class='icon-lg'/>",
     },
     {
       name: "Java",

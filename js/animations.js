@@ -110,7 +110,7 @@ export class AnimationManager {
     this.setupJobTitleAnimation();
   }
 setupJobTitleAnimation() {
-    const titles = ["JAVA", "Python", "SQL", "Go", "Swift", "Backend"];
+    const titles = ["JAVA", "Python", "SQL", "Go", "Swift"];
     const titleElement = document.querySelector(".job-title");
 
     if (!titleElement) return;
