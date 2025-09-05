@@ -89,22 +89,13 @@ export const CONFIG = {
       technologies: ["HTML", "CSS", "JS", "GSAP"],
     },
     {
-      id: "mobile-app",
-      title: "行動應用程式",
-      description: "跨平台行動應用，提供流暢的使用者體驗與即時通訊功能",
+      id: "asset-tracker",
+      title: "個人資產追蹤系統",
+      description: "個人資產追蹤系統，支援多種資產類型的價值趨勢紀錄。",
       image:
-        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&h=300&fit=crop",
-      link: "#",
-      technologies: ["React Native", "Firebase", "Redux", "WebRTC"],
-    },
-    {
-      id: "dashboard",
-      title: "數據分析儀表板",
-      description: "即時數據視覺化平台，支援多種圖表類型與自定義報表生成",
-      image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop",
-      link: "#",
-      technologies: ["D3.js", "Python", "PostgreSQL"],
+        "../assets/asset-tracker.png",
+      link: "https://github.com/tche0043/AssetTracker",
+      technologies: ["HTML", "CSS", "JS", "Bootstrap", "Python Django", "postgreSQL", "Docker"],
     },
   ],
 
