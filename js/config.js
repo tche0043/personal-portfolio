@@ -34,7 +34,7 @@ export const CONFIG = {
       DESKTOP: 32,
     },
     AUTO_SCROLL_DURATION: 60,
-    DRAG_SENSITIVITY: 0.5,
+    DRAG_SENSITIVITY: 1.2,
     RESUME_DELAY: 3000,
     INDICATOR_ANIMATION_DURATION: 0.8,
   },
@@ -65,23 +65,28 @@ export const CONFIG = {
   // Portfolio data - 作品集數據
   PORTFOLIO_PROJECTS: [
     {
-      id: "ecommerce",
-      title: "電商平台",
+      id: "parking-lot",
+      title: "停車場管理系統",
       description:
-        "現代化的電商解決方案，具備完整的購物車、支付系統與後台管理功能",
-      image:
-        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop",
-      link: "#",
-      technologies: ["React", "Node.js", "MongoDB", "Stripe"],
+        "現代化的停車場管理系統，具備完整的車輛管理、支付系統與後台管理功能。",
+      image: "../assets/parking-lot-admin.png",
+      link: "https://github.com/tche0043/parking-lot-management-system",
+      technologies: [
+        "Python Flask",
+        "HTML",
+        "CSS",
+        "JS",
+        "Bootstrap",
+        "SQL Server",
+      ],
     },
     {
-      id: "enterprise",
-      title: "企業管理系統",
-      description: "全方位的企業資源規劃系統，提升營運效率與數據分析能力",
-      image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=300&fit=crop",
-      link: "#",
-      technologies: ["Vue.js", "Express", "PostgreSQL", "Docker"],
+      id: "personal-portfolio",
+      title: "個人作品集網站",
+      description: "展示個人技能與專案經驗的網站，結合現代設計與互動效果。",
+      image: "../assets/personal-portfolio.png",
+      link: "https://github.com/tche0043/personal-portfolio",
+      technologies: ["HTML", "CSS", "JS", "GSAP"],
     },
     {
       id: "mobile-app",
