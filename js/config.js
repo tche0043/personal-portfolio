@@ -120,7 +120,7 @@ export const CONFIG = {
     },
     {
       name: "JavaScript",
-      icon: "<img src='assets/javaScript-logo.svg' class='icon-lg'/>",
+      icon: "<img src='assets/javascript-logo.svg' class='icon-lg'/>",
     },
     {
       name: "Java",
@@ -144,7 +144,7 @@ export const CONFIG = {
     },
     {
       name: "SQL SERVER",
-      icon: "<img src='assets/sqlServer-logo.svg' class='icon-lg'/>",
+      icon: "<img src='assets/sqlserver-logo.svg' class='icon-lg'/>",
     },
     {
       name: "MongoDB",
