@@ -524,6 +524,7 @@ span {
 .portfolio-carousel {
   display: flex;
   gap: 2rem;
+  will-change: transform;
 }
 .portfolio-carousel-container .portfolio-card * {
   user-select: none;

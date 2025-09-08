@@ -37,6 +37,8 @@ export const CONFIG = {
     DRAG_SENSITIVITY: 1.2,
     RESUME_DELAY:1000,
     INDICATOR_ANIMATION_DURATION: 0.8,
+    MOMENTUM_MULTIPLIER: 12,
+    DRAG_THRESHOLD_PX: 5
   },
 
   // Responsive breakpoints

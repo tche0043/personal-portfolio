@@ -84,6 +84,8 @@ export class PortfolioCarousel {
   }
 
   setupCarousel() {
+    gsap.set(this.carousel, { opacity: 0 });
+
     const clones = this.originalCards.map((card) => card.cloneNode(true));
     this.carousel.append(...clones);
     this.cards = Array.from(this.carousel.querySelectorAll(CONFIG.SELECTORS.PORTFOLIO_CARDS));
@@ -91,6 +93,13 @@ export class PortfolioCarousel {
     this.xSetter = gsap.quickSetter(this.carousel, "x", "px");
     this.calculateDimensions();
     if (this.container) this.container.style.cursor = "grab";
+
+    gsap.to(this.carousel, { 
+      opacity: 1, 
+      duration: 0.4, 
+      ease: "power1.inOut" 
+    });
+    this.wrapIndex = gsap.utils.wrap(0, this.originalCards.length);
   }
 
   calculateDimensions() {
@@ -130,30 +139,31 @@ export class PortfolioCarousel {
 
     window.addEventListener("resize", this.boundResizeHandler);
 
-    // ★ 關鍵修正：在捕獲階段監聽 click 事件，以防止拖曳後的誤觸發
     DOMUtils.safeAddEventListener(this.container, "click", (e) => this.handleClick(e), true);
   }
 
-  updateIndicators() {
-    if (!this.indicators.length || this.totalWidth === 0) return;
+updateIndicators() {
+  if (!this.indicators.length || this.totalWidth === 0) return;
 
-    const now = performance.now();
-    if (now - this.lastUpdateTime < 16) return;
-    this.lastUpdateTime = now;
+  const now = performance.now();
+  if (now - this.lastUpdateTime < 16) return;
+  this.lastUpdateTime = now;
+  
+  const cardStep = this.cardWidth + this.gap;
+  const rawIndex = Math.round(this.currentX / -cardStep);
+  const activeIndex = this.wrapIndex(rawIndex);
 
-    const progress = Math.abs(this.wrap(this.currentX) / this.totalWidth);
-    let activeIndex = Math.floor(progress * this.originalCards.length + 0.5);
-    activeIndex = activeIndex % this.originalCards.length;
-
-    if (this.indicators[activeIndex] && !this.indicators[activeIndex].classList.contains("active")) {
-      this.indicators.forEach((indicator, index) => {
-        const isActive = index === activeIndex;
-        indicator.classList.toggle("active", isActive);
-        this.originalCards[index]?.setAttribute("aria-hidden", !isActive);
-        this.cards[index + this.originalCards.length]?.setAttribute("aria-hidden", !isActive);
-      });
-    }
+  if (this.indicators[activeIndex] && !this.indicators[activeIndex].classList.contains("active")) {
+    this.indicators.forEach((indicator, index) => {
+      const isActive = index === activeIndex;
+      indicator.classList.toggle("active", isActive);
+      const originalCard = this.originalCards[index];
+      const clonedCard = this.cards[index + this.originalCards.length];
+      if (originalCard) originalCard.setAttribute("aria-hidden", !isActive);
+      if (clonedCard) clonedCard.setAttribute("aria-hidden", !isActive);
+    });
   }
+}
 
   startAutoScroll() {
     if (this.portfolioTl) this.portfolioTl.kill();
@@ -191,15 +201,43 @@ export class PortfolioCarousel {
     }, CONFIG.CAROUSEL.RESUME_DELAY);
   }
 
-  navigateToIndex(index) {
+navigateToIndex(index) {
     this.isManualControl = true;
     if (this.portfolioTl) this.portfolioTl.pause();
     gsap.killTweensOf(this.carousel);
     clearTimeout(this.resumeTimer);
 
-    const targetX = -((this.cardWidth + this.gap) * index);
+    const cardStep = this.cardWidth + this.gap;
+    if (cardStep === 0) return;
+
+    const currentX = gsap.getProperty(this.carousel, "x");
+    const currentIndex = this.wrapIndex(Math.round(currentX / -cardStep));
+
+    if (index === currentIndex) {
+      this.resumeAutoScroll();
+      return;
+    }
+
+
+    const baseTargetX = -cardStep * index;
+    let finalTargetX = baseTargetX;
+
+    if (this.totalWidth > 0) {
+      if (index > currentIndex) {
+
+        if (baseTargetX > currentX) {
+          finalTargetX = baseTargetX - this.totalWidth;
+        }
+      } 
+      else {
+        if (baseTargetX < currentX) {
+          finalTargetX = baseTargetX + this.totalWidth;
+        }
+      }
+    }
+
     gsap.to(this.carousel, {
-      x: targetX,
+      x: finalTargetX,
       duration: CONFIG.CAROUSEL.INDICATOR_ANIMATION_DURATION,
       ease: "power2.out",
       onUpdate: () => {
@@ -207,7 +245,8 @@ export class PortfolioCarousel {
         this.updateIndicators();
       },
       onComplete: () => {
-        this.currentX = targetX;
+        this.currentX = this.wrap(finalTargetX);
+        gsap.set(this.carousel, { x: this.currentX });
         this.updateIndicators();
         this.resumeAutoScroll();
       },
@@ -246,7 +285,7 @@ export class PortfolioCarousel {
     e.preventDefault();
     
     // ★ 如果移動超過一個微小的閾值，就認定為拖曳
-    if (Math.abs(deltaXTotal) > 5) {
+    if (Math.abs(deltaXTotal) > CONFIG.CAROUSEL.DRAG_THRESHOLD_PX) {
       this.wasDragged = true;
     }
 
@@ -259,10 +298,11 @@ export class PortfolioCarousel {
     this.updateIndicators();
   }
 
-  handleDragEnd() {
+handleDragEnd() {
     if (!this.isDragging) return;
     this.isDragging = false;
     if (this.container) this.container.style.cursor = "grab";
+    this.currentX = gsap.getProperty(this.carousel, "x");
 
     if (!this.wasDragged) { // 如果沒有實際拖曳，則不觸發慣性
       this.resumeAutoScroll();
@@ -270,12 +310,17 @@ export class PortfolioCarousel {
     }
 
     const cardStep = this.cardWidth + this.gap;
+    if (cardStep === 0) {
+      this.resumeAutoScroll();
+      return;
+    }
+
     const momentumX = this.currentX + this.velocityX * 12;
-    const targetIndex = Math.round(momentumX / cardStep);
-    const targetX = this.wrap(targetIndex * cardStep);
+
+    const snappedX = Math.round(momentumX / cardStep) * cardStep;
 
     gsap.to(this.carousel, {
-      x: targetX,
+      x: snappedX,
       duration: 1.2,
       ease: "power3.out",
       onUpdate: () => {
@@ -283,7 +328,9 @@ export class PortfolioCarousel {
         this.updateIndicators();
       },
       onComplete: () => {
-        this.currentX = targetX;
+        this.currentX = this.wrap(snappedX);
+        this.xSetter(this.currentX); 
+
         this.updateIndicators();
         this.resumeAutoScroll();
       }
@@ -324,24 +371,27 @@ export class PortfolioCarousel {
     }
   }
 
-  handleResize() {
-    if (this.portfolioTl) this.portfolioTl.pause();
-    
-    const progress = this.totalWidth > 0 ? Math.abs(this.wrap(this.currentX) / this.totalWidth) : 0;
-    let activeIndex = Math.floor(progress * this.originalCards.length);
-    activeIndex = isNaN(activeIndex) ? 0 : activeIndex;
+handleResize() {
+  if (this.portfolioTl) this.portfolioTl.pause();
 
-    this.calculateDimensions();
-    
-    const newX = -((this.cardWidth + this.gap) * activeIndex);
-    this.currentX = this.wrap(newX);
-    
-    gsap.set(this.carousel, { x: this.currentX });
-    
-    if (this.observer && this.observer.isIntersecting) {
-        this.startAutoScroll();
-    }
+  // 根據當前的 currentX 計算出最近的 activeIndex
+  const cardStep = this.cardWidth + this.gap;
+  const rawIndex = cardStep > 0 ? Math.round(this.currentX / -cardStep) : 0;
+  const activeIndex = this.wrapIndex(rawIndex);
+
+  // 重新計算尺寸
+  this.calculateDimensions();
+
+  // 根據 activeIndex 直接定位到新的位置
+  const newX = -((this.cardWidth + this.gap) * activeIndex);
+  this.currentX = this.wrap(newX);
+
+  gsap.set(this.carousel, { x: this.currentX });
+
+  if (this.observer && this.observer.isIntersecting) {
+      this.startAutoScroll();
   }
+}
 
   setupIntersectionObserver() {
     if (!this.container) return;

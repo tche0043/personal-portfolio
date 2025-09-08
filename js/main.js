@@ -16,7 +16,7 @@ class App {
   }
 
   init() {
-    // Wait for DOM to be ready
+    // 等待 DOM 加載完成
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", () => this.initializeApp());
     } else {
@@ -24,26 +24,23 @@ class App {
     }
   }
 
-  // ★ 關鍵修正：將 initializeApp 改為 async 函式
+
   async initializeApp() {
     try {
-      // Register GSAP plugins with error handling
       if (typeof gsap !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-        // ★ 註冊 CSSPlugin 以支援 force3D
-        if (gsap.plugins && gsap.plugins.CSSPlugin) {
-          gsap.registerPlugin(gsap.plugins.CSSPlugin);
-        }
-      }
+      } else {
+      console.error("GSAP library not loaded! Animations will not work.");
+    }
 
       // 正常初始化不依賴輪播的模組
       this.contentManager = new ContentManager();
       this.navigation = new Navigation();
 
-      // 步驟 1：建立輪播物件
+      // 建立輪播物件
       this.portfolioCarousel = new PortfolioCarousel();
 
-      // 步驟 2：使用 await 等待輪播系統（包含圖片載入）完全準備就緒
+      // 使用 await 等待輪播系統（包含圖片載入）完全準備就緒
       await this.portfolioCarousel.init();
 
       // 步驟 3：在輪播系統就緒後，才安全地初始化動畫管理器
@@ -52,7 +49,7 @@ class App {
       // ★ 新增：註冊 beforeunload 事件進行清理
       this.setupCleanup();
 
-      ErrorHandler.logInfo("App", "Portfolio website initialized successfully 🎉");
+      ErrorHandler.logInfo("App", "Portfolio website initialized successfully");
     } catch (error) {
       ErrorHandler.logError("App.initializeApp", error);
     }
