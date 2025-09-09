@@ -1,14 +1,15 @@
-// Utilities module - error handling and helper functions
+// Utilities module - 錯誤處理以及小工具
 
-// Development vs Production logging control
+// 判斷是否為開發模式
 const isDevelopment = () => {
-  return window.location.hostname === 'localhost' || 
-         window.location.hostname === '127.0.0.1' || 
-         window.location.hostname.includes('local') ||
-         window.location.protocol === 'file:';
+  return window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.protocol === 'file:';
 };
 
+// 錯誤處理class
 export class ErrorHandler {
+
   static logError(context, error, element = null) {
     const errorInfo = {
       context,
@@ -18,43 +19,68 @@ export class ErrorHandler {
       userAgent: navigator.userAgent,
       url: window.location.href
     };
-    
-    // Only log to console in development
+
+    // 如果為開發模式使用console, 如果不是則傳到Sentry
     if (isDevelopment()) {
       console.error(`❌ [${context}]`, errorInfo);
+    } else {
+      if (window.Sentry) {
+        window.Sentry.captureException(error, { extra: errorInfo });
+      }
     }
-    
-    // In production, send to error tracking service instead
-    // this.sendToErrorTracking(errorInfo);
   }
 
   static logWarning(context, message, element = null) {
-    // Only log to console in development
     if (isDevelopment()) {
       console.warn(`⚠️ [${context}] ${message}`, element || '');
+    } else {
+      const sentryContext = {
+        level: "warning",
+        extra: {}
+      };
+
+      if (element) {
+        sentryContext.extra.element = element;
+      }
+
+      if (window.Sentry) {
+        window.Sentry.captureMessage(`[${context}] ${message}`, sentryContext);
+      }
     }
   }
 
   static logInfo(context, message, data = null) {
-    // Only log to console in development
     if (isDevelopment()) {
       console.log(`ℹ️ [${context}] ${message}`, data || '');
+    } else {
+      const sentryContext = {
+        level: "info",
+        extra: {}
+      };
+
+      if (data) {
+        sentryContext.extra.data = data;
+      }
+
+      if (window.Sentry) {
+        window.Sentry.captureMessage(`[${context}] ${message}`, sentryContext);
+      }
     }
   }
 }
 
 export class DOMUtils {
   /**
-   * Safely query a single element with error handling
-   * @param {string} selector - CSS selector string
-   * @param {Document|Element} context - Search context element (default: document)
-   * @returns {Element|null} Found element or null if not found/error
+   * 安全地查詢單一元素，包含錯誤處理
+   * @param {string} selector - CSS 選擇器字串
+   * @param {Document|Element} context - 搜尋範圍的上下文元素 (預設為 document)
+   * @returns {Element|null} 找到的元素，如果未找到或出錯則返回 null
    */
   static safeQuerySelector(selector, context = document) {
     try {
       const element = context.querySelector(selector);
       if (!element) {
-        ErrorHandler.logWarning('DOMUtils', `Element not found: ${selector}`);
+        ErrorHandler.logWarning('DOMUtils', `無法找到該元素: ${selector}`);
       }
       return element;
     } catch (error) {
@@ -64,40 +90,40 @@ export class DOMUtils {
   }
 
   /**
-   * Safely query multiple elements with error handling
-   * @param {string} selector - CSS selector string
-   * @param {Document|Element} context - Search context element (default: document)
-   * @returns {NodeList} Found elements (empty NodeList if none found/error)
+   * 安全的查詢多個元素，包含錯誤處理
+   * @param {string} selector - CSS 選擇器字串
+   * @param {Document|Element} context - 搜尋範圍的上下文元素 (預設為 document)
+   * @returns {NodeList} 找到的元素集合 (如果未找到或出錯則返回空的 NodeList)
    */
   static safeQuerySelectorAll(selector, context = document) {
     try {
       const elements = context.querySelectorAll(selector);
       if (elements.length === 0) {
-        ErrorHandler.logWarning('DOMUtils', `No elements found: ${selector}`);
+        ErrorHandler.logWarning('DOMUtils', `沒有找到任何元素: ${selector}`);
       }
       return elements;
     } catch (error) {
       ErrorHandler.logError('DOMUtils.safeQuerySelectorAll', error, selector);
-      return document.querySelectorAll(''); // Return empty NodeList
+      return document.querySelectorAll('');
     }
   }
 
   /**
-   * Safely add event listener with comprehensive error handling
-   * @param {Element|null} element - Target DOM element
-   * @param {string} eventType - Event type (e.g., 'click', 'mouseover')
-   * @param {Function} handler - Event handler function
-   * @param {AddEventListenerOptions} options - Event listener options
-   * @returns {boolean} Success status of event listener attachment
+   * 安全地新增事件監聽器，包含完整的錯誤處理
+   * @param {Element|null} element - 目標 DOM 元素
+   * @param {string} eventType - 事件類型 (例如 'click', 'mouseover')
+   * @param {Function} handler - 事件處理函式
+   * @param {AddEventListenerOptions} options - 事件監聽器選項
+   * @returns {boolean} 事件監聽器是否成功附加的狀態
    */
   static safeAddEventListener(element, eventType, handler, options = {}) {
     if (!element) {
-      ErrorHandler.logWarning('DOMUtils', `Cannot add event listener: element is null (${eventType})`);
+      ErrorHandler.logWarning('DOMUtils', `無法新增事件監聽器：目標元素為 null (${eventType})`);
       return false;
     }
 
     if (typeof handler !== 'function') {
-      ErrorHandler.logWarning('DOMUtils', `Invalid event handler for ${eventType}`);
+      ErrorHandler.logWarning('DOMUtils', `提供給 ${eventType} 的事件處理常式無效`);
       return false;
     }
 
@@ -117,37 +143,26 @@ export class DOMUtils {
       return false;
     }
   }
-
-  /**
-   * Safely get element style property
-   * @param {Element} element - Target element
-   * @param {string} property - CSS property name
-   * @returns {string} - Property value or empty string
-   */
-  static safeGetStyle(element, property) {
-    try {
-      if (!element) return '';
-      return window.getComputedStyle(element).getPropertyValue(property) || '';
-    } catch (error) {
-      ErrorHandler.logError('DOMUtils.safeGetStyle', error, property);
-      return '';
-    }
-  }
 }
 
 export class AnimationUtils {
   /**
-   * Safely execute GSAP animation with fallback
-   * @param {Function} animationFn - GSAP animation function
-   * @param {string} context - Context for error logging
-   * @param {Function} fallback - Fallback function if animation fails
+   * 安全地執行 GSAP 動畫，包含備用方案
+   * @param {Function} animationFn - GSAP 動畫函式
+   * @param {string} context - 用於錯誤日誌的上下文
+   * @param {Function} fallback - 動畫失敗時的備用函式
    */
   static safeAnimate(animationFn, context = 'Animation', fallback = null) {
     try {
       if (typeof gsap === 'undefined') {
-        ErrorHandler.logWarning(context, 'GSAP is not available, skipping animation');
-        if (fallback) fallback();
-        return null;
+        ErrorHandler.logWarning(context, 'GSAP 函式庫未載入，跳過動畫');
+        if (fallback) {
+          try {
+            fallback();
+          } catch (fallbackError) {
+            ErrorHandler.logError(`${context}.fallback`, fallbackError);
+          }
+        }
       }
       return animationFn();
     } catch (error) {
@@ -164,9 +179,9 @@ export class AnimationUtils {
   }
 
   /**
-   * Safely kill GSAP timeline or animation
-   * @param {Object} animation - GSAP timeline or tween
-   * @param {string} context - Context for error logging
+   * 安全地終止 GSAP 時間軸或動畫
+   * @param {Object} animation - GSAP 時間軸或 tween
+   * @param {string} context - 用於錯誤日誌的上下文
    */
   static safeKill(animation, context = 'Animation') {
     try {
@@ -177,74 +192,42 @@ export class AnimationUtils {
       ErrorHandler.logError(`${context}.kill`, error);
     }
   }
-}
 
-export class MediaUtils {
-  /**
-   * Safely check if viewport matches media query
-   * @param {string} query - Media query string
-   * @returns {boolean} - Match result
-   */
-  static matchesMedia(query) {
+  //安全地終止所有ScrollTriggers
+  static safeKillAllScrollTriggers() {
     try {
-      return window.matchMedia(query).matches;
+      if (window.ScrollTrigger) {
+        ScrollTrigger.killAll();
+      }
     } catch (error) {
-      ErrorHandler.logError('MediaUtils.matchesMedia', error, query);
-      return false;
+      ErrorHandler.logError('AnimationUtils.safeKillAllScrollTriggers', error);
     }
   }
 
   /**
-   * Safely get viewport dimensions
-   * @returns {Object} - Viewport width and height
+   * 使用 requestAnimationFrame 對函式進行節流
+   * 限制一個函式在瀏覽器的每一幀中最多只執行一次。
+   * @param {Function} fn - 要被節流的函式
+   * @returns {Function} - 一個新的、被節流過的函式
    */
-  static getViewportSize() {
-    try {
-      return {
-        width: window.innerWidth || document.documentElement.clientWidth || 0,
-        height: window.innerHeight || document.documentElement.clientHeight || 0
-      };
-    } catch (error) {
-      ErrorHandler.logError('MediaUtils.getViewportSize', error);
-      return { width: 0, height: 0 };
-    }
-  }
-}
+  static throttleWithRAF(fn) {
+    let rafId = null;
+    // 將fn進行節流
+    const throttledFn = function (...args) {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        fn(...args);
+        rafId = null;
+      });
+    };
+    // 創建一個cancel function用於資源回收
+    throttledFn.cancel = function () {
+      if (!rafId) return;
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    };
 
-export class FeatureDetection {
-  /**
-   * Check if touch events are supported
-   * @returns {boolean}
-   */
-  static isTouchSupported() {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  }
+    return throttledFn;
 
-  /**
-   * Check if Intersection Observer is supported
-   * @returns {boolean}
-   */
-  static isIntersectionObserverSupported() {
-    return 'IntersectionObserver' in window;
-  }
-
-  /**
-   * Check if CSS Grid is supported
-   * @returns {boolean}
-   */
-  static isGridSupported() {
-    try {
-      return CSS.supports('display', 'grid');
-    } catch (error) {
-      return false;
-    }
-  }
-
-  /**
-   * Check if requestAnimationFrame is supported
-   * @returns {boolean}
-   */
-  static isRAFSupported() {
-    return 'requestAnimationFrame' in window;
   }
 }

@@ -1,86 +1,67 @@
-// Configuration constants for the portfolio website
-// This centralizes all hardcoded values for easier maintenance
-
+// 網站的固定參數列表
 export const CONFIG = {
-  // Animation durations and settings
+  // 動畫參數
   ANIMATION: {
-    HERO_TITLE_DURATION: 1,
-    HERO_BUTTONS_DURATION: 0.6,
-    HERO_BUTTONS_DELAY: -0.3,
-    SCROLL_DURATION: 2,
-    SCROLL_OFFSET_Y: 60,
-    FLOATING_ICON_DURATION: 2,
-    FLOATING_ICON_STAGGER: 0.3,
-    DOODO_ROTATION_DURATION: 30,
-    SECTION_ANIMATION_DURATION: 1.2, // ★ About 區域動畫持續時間
-    SECTION_ANIMATION_DELAY: 0.3, // ★ About 區域延遲時間
-    TECH_STACK_DURATION: 1.8, // ★ 新增：Tech Stack 動畫持續時間
-    TECH_STACK_STAGGER: 0.15, // ★ 新增：Tech Stack 動畫間隔
-    PORTFOLIO_DURATION: 1.2, // ★ 新增：Portfolio 動畫持續時間
-    PORTFOLIO_STAGGER: 0.15, // ★ 新增：Portfolio 動畫間隔
-    TECH_HOVER_DURATION: 0.3,
-    TECH_HOVER_SCALE: 1.02,
-    TECH_HOVER_Y: -6,
-    ICON_HOVER_SCALE: 1.1,
-    ICON_HOVER_ROTATION: 5,
+    // Hero 區域
+    HERO_TITLE_DURATION: 1,           // Hero標題的動畫時間
+    HERO_BUTTONS_DURATION: 0.6,       // Hero按鈕的動畫時間
+    HERO_BUTTONS_DELAY: 0.5,          // Hero按鈕的動畫延遲
+    FLOATING_ICON_DURATION: 2,        // floating icon單次動畫時間
+    FLOATING_ICON_STAGGER: 0.3,       // floating icon之間的動畫錯開時間
+
+
+    // 頁面滾動
+    SCROLL_DURATION: 2,               // 平滑滾動到區塊的動畫時間
+    SCROLL_OFFSET_Y: 60,              // 平滑滾動的垂直偏移量 (避免被導覽列擋住)
+
+    // Doodo 背景
+    DOODO_ROTATION_DURATION: 30,      // Doodo 背景旋轉一圈的時間
+
+    // 區塊進場動畫
+    SECTION_ANIMATION_DURATION: 1.2,  // 通用區塊進場動畫的時間
+    SECTION_ANIMATION_DELAY: 0.3,     // 通用區塊進場動畫的延遲
+    TECH_STACK_DURATION: 1.8,         // 技術棧區塊的動畫總時間
+    TECH_STACK_STAGGER: 0.15,         // 技術棧項目之間的動畫錯開時間
+    PORTFOLIO_STAGGER: 0.15,          // 作品集卡片之間的動畫錯開時間
+
+    // 技術項目懸停效果
+    TECH_HOVER_DURATION: 0.25,         // 懸停動畫時間
+    TECH_HOVER_SCALE: 1.02,           // 懸停時卡片的放大比例
+    TECH_HOVER_Y: -6,                 // 懸停時卡片的向上位移量
+    ICON_HOVER_SCALE: 1.1,            // 懸停時圖示的放大比例
+    ICON_HOVER_ROTATION: 5,           // 懸停時圖示的旋轉角度
   },
 
-  // Carousel settings
+  // 輪播列表設定
   CAROUSEL: {
-    MOBILE_CARD_WIDTH: 280,
-    DESKTOP_CARD_WIDTH: 350,
-    GAP: {
-      MOBILE: 24,
-      DESKTOP: 32,
-    },
-    AUTO_SCROLL_DURATION: 60,
-    DRAG_SENSITIVITY: 1.2,
-    RESUME_DELAY:1000,
-    INDICATOR_ANIMATION_DURATION: 0.8,
-    MOMENTUM_MULTIPLIER: 12,
-    DRAG_THRESHOLD_PX: 5
+    AUTO_SCROLL_DURATION: 60,         // 自動輪播一整輪所需時間 (秒)
+    DRAG_SENSITIVITY: 1.2,            // 拖曳的靈敏度
+    RESUME_DELAY: 1000,               // 停止手動操作後，恢復自動輪播的延遲 (毫秒)
+    INDICATOR_ANIMATION_DURATION: 0.8,// 點擊指示器時的動畫時間
+    MOMENTUM_MULTIPLIER: 12,          // 拖曳放開後的慣性乘數
+    DRAG_THRESHOLD_PX: 5              // 觸發拖曳所需的最小移動距離 (像素)
   },
 
-  // Responsive breakpoints
-  BREAKPOINTS: {
-    MOBILE_MAX: 767,
-    TABLET_MIN: 768,
-    TABLET_MAX: 1023,
-    DESKTOP_MIN: 1024,
-    DESKTOP_MAX: 1511,
-    LARGE_DESKTOP_MIN: 1512,
-  },
-
-  // ScrollTrigger settings
+  // ScrollTrigger 滾動觸發設定
   SCROLL_TRIGGER: {
-    START_POSITION: "top 90%",
-    END_POSITION: "bottom 20%",
-    TOGGLE_ACTIONS: "play none none none",
-    REVERSE_TOGGLE_ACTIONS: "play none none reverse",
-    // ★ 新增：各區域特定觸發位置
-    ABOUT_START: "top 75%",
-    PORTFOLIO_START: "top 75%",
-    TECH_STACK_START: "top 90%",
-    CONTACT_START: "top 80%",
+    ABOUT_START: "top 75%",           // 「關於我」區塊的觸發點
+    PORTFOLIO_START: "top 75%",       // 「作品集」區塊的觸發點
+    TECH_STACK_START: "top 90%",      // 「技術棧」區塊的觸發點
+    CONTACT_START: "top bottom-=100px",         // 「聯絡資訊」區塊的觸發點
   },
 
-  // Portfolio data - 作品集數據
+  HERO_SETTINGS: {
+    JOB_TITLES: ["JAVA", "Python", "SQL", "Go", "Swift"]
+  },
+  // 作品集數據
   PORTFOLIO_PROJECTS: [
     {
       id: "parking-lot",
       title: "停車場管理系統",
-      description:
-        "現代化的停車場管理系統，具備完整的車輛管理、支付系統與後台管理功能。",
+      description: "現代化的停車場管理系統，具備完整的車輛管理、支付系統與後台管理功能。",
       image: "../assets/parking-lot-admin.png",
       link: "https://github.com/tche0043/parking-lot-management-system",
-      technologies: [
-        "Python Flask",
-        "HTML",
-        "CSS",
-        "JS",
-        "Bootstrap",
-        "SQL Server",
-      ],
+      technologies: ["Python Flask", "HTML", "CSS", "JS", "Bootstrap", "SQL Server"],
     },
     {
       id: "personal-portfolio",
@@ -94,134 +75,80 @@ export const CONFIG = {
       id: "asset-tracker",
       title: "個人資產追蹤系統",
       description: "個人資產追蹤系統，支援多種資產類型的價值趨勢紀錄。",
-      image:
-        "../assets/asset-tracker.png",
+      image: "../assets/asset-tracker.png",
       link: "https://github.com/tche0043/AssetTracker",
       technologies: ["HTML", "CSS", "JS", "Bootstrap", "Python Django", "postgreSQL", "Docker"],
     },
   ],
 
-  // Tech stack data - Java軟體工程師技術棧
+  // 技術棧數據
   TECH_STACKS: [
-    {
-      name: "HTML",
-      icon: "<img src='assets/html5-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "CSS",
-      icon: "<img src='assets/css-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "JavaScript",
-      icon: "<img src='assets/javascript-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "Java",
-      icon: "<img src='assets/java-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "Python",
-      icon: "<img src='assets/python-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "Go",
-      icon: "<img src='assets/golang-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "Swift",
-      icon: "<img src='assets/swift-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "R",
-      icon: "<img src='assets/r-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "SQL SERVER",
-      icon: "<img src='assets/sqlserver-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "MongoDB",
-      icon: "<img src='assets/mongodb-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "Git",
-      icon: "<img src='assets/git-logo.svg' class='icon-lg'/>",
-    },
-    {
-      name: "Docker",
-      icon: "<img src='assets/docker-logo.svg' class='icon-lg'/>",
-    },
+    { name: "HTML", icon: "<img src='assets/html5-logo.svg' class='icon-lg'/>" },
+    { name: "CSS", icon: "<img src='assets/css-logo.svg' class='icon-lg'/>" },
+    { name: "JavaScript", icon: "<img src='assets/javascript-logo.svg' class='icon-lg'/>" },
+    { name: "Java", icon: "<img src='assets/java-logo.svg' class='icon-lg'/>" },
+    { name: "Python", icon: "<img src='assets/python-logo.svg' class='icon-lg'/>" },
+    { name: "Go", icon: "<img src='assets/golang-logo.svg' class='icon-lg'/>" },
+    { name: "Swift", icon: "<img src='assets/swift-logo.svg' class='icon-lg'/>" },
+    { name: "R", icon: "<img src='assets/r-logo.svg' class='icon-lg'/>" },
+    { name: "SQL SERVER", icon: "<img src='assets/sqlserver-logo.svg' class='icon-lg'/>" },
+    { name: "MongoDB", icon: "<img src='assets/mongodb-logo.svg' class='icon-lg'/>" },
+    { name: "Git", icon: "<img src='assets/git-logo.svg' class='icon-lg'/>" },
+    { name: "Docker", icon: "<img src='assets/docker-logo.svg' class='icon-lg'/>" },
   ],
 
-  // CSS color variables (for JS animations)
+  // JS 中會用到的 CSS 顏色
   COLORS: {
     CYAN_400: "#22d3ee",
-    CYAN_500: "#06b6d4",
-    BLUE_400: "#60a5fa",
-    BLUE_500: "#3b82f6",
-    PURPLE_400: "#c084fc",
     WHITE: "#ffffff",
-    SLATE_600: "#475569",
-    SLATE_700: "#334155",
-    SLATE_800: "#1e293b",
   },
 
-  // Performance settings
-  PERFORMANCE: {
-    MOUSE_THROTTLE: true,
-    USE_TRANSFORM_3D: true,
-    WILL_CHANGE_ELEMENTS: [".floating-icon", ".doodo-background"],
-    STAGGER_ANIMATIONS: true,
-  },
-
-  // Selectors (commonly used)
+  // 統一管理的 CSS 選擇器
   SELECTORS: {
-    NAV_TOGGLE: ".nav-toggle",
-    NAV_MENU: ".nav-menu",
-    NAV_LINKS: ".nav-link",
-    HERO_TITLE: ".hero-title",
-    HERO_BUTTONS: ".hero-buttons",
-    FLOATING_ICONS: ".floating-icon",
-    DOODO_BACKGROUND: ".doodo-background",
-    PORTFOLIO_CAROUSEL: ".portfolio-carousel",
-    PORTFOLIO_CARDS: ".portfolio-card",
-    PORTFOLIO_CONTAINER: ".portfolio-carousel-container",
-    INDICATORS: ".portfolio-indicators .indicator",
-    TECH_GRID: "#tech-stack .tech-grid",
-    TECH_ITEMS: ".tech-item",
+    // 導覽列
+    NAV_TOGGLE: ".nav-toggle",               // 導覽列漢堡/X 按鈕
+    NAV_MENU: ".nav-menu",                 // 導覽列選單
+    NAV_LINKS: ".nav-link",                // 導覽列中的連結
+
+    // Hero 區域
+    HERO_TITLE: ".hero-title",               // Hero標題
+    HERO_BUTTONS: ".hero-buttons",             // Hero標題下方按鈕
+    FLOATING_ICONS: ".floating-icon",        // floating icon的開發圖示
+    DOODO_BACKGROUND: ".doodo-background",   // Doodo 旋轉背景
+    JOB_TITLE: ".job-title",                 // 職稱輪播文字
+
+    // 關於我區塊
+    PROFILE_CARD: ".profile-card",           // 個人資料卡片
+    ABOUT_TEXT: ".about-text",               // 「關於我」的文字區塊
+
+    // 作品集區塊
+    PORTFOLIO_CAROUSEL: ".portfolio-carousel",   // 輪播的滾動容器
+    PORTFOLIO_CARDS: ".portfolio-card",        // 輪播中的每一張卡片
+    PORTFOLIO_CONTAINER: ".portfolio-carousel-container", // 輪播的整體容器
+    INDICATORS: ".portfolio-indicators .indicator", // 輪播指示器 (小圓點)
+
+    // 技術棧區塊
+    TECH_GRID: "#tech-stack .tech-grid",   // 技術棧的網格容器
+    TECH_ITEMS: ".tech-item",                // 每一項技術項目
+
+    // 聯絡資訊區塊
+    CONTACT_INFO_LIST: ".contact-info-list", // 聯絡資訊列表
   },
 };
 
-// Utility functions for responsive calculations
+// 響應式網站的工具函式
 export const UTILS = {
-  // Check if current viewport is mobile
-  isMobile: () => window.innerWidth <= CONFIG.BREAKPOINTS.MOBILE_MAX,
-
-  // Check if current viewport is tablet
-  isTablet: () =>
-    window.innerWidth >= CONFIG.BREAKPOINTS.TABLET_MIN &&
-    window.innerWidth <= CONFIG.BREAKPOINTS.TABLET_MAX,
-
-  // Check if current viewport is desktop
-  isDesktop: () => window.innerWidth >= CONFIG.BREAKPOINTS.DESKTOP_MIN,
-
-  // Get card width based on viewport
-  getCardWidth: () =>
-    UTILS.isMobile()
-      ? CONFIG.CAROUSEL.MOBILE_CARD_WIDTH
-      : CONFIG.CAROUSEL.DESKTOP_CARD_WIDTH,
-
-  // Get gap based on viewport
-  getGap: () =>
-    UTILS.isMobile() ? CONFIG.CAROUSEL.GAP.MOBILE : CONFIG.CAROUSEL.GAP.DESKTOP,
-
-  // Throttle function for performance
+  /**
+   * 節流函式 (Throttle function for performance)
+   * 限制一個函式在特定時間內只能被執行一次，用於效能優化。
+   * @param {Function} func - 要被節流的函式
+   * @param {number} delay - 延遲的毫秒數
+   */
   throttle: (func, delay) => {
     let timeoutId;
     let lastExecTime = 0;
     return function (...args) {
       const currentTime = Date.now();
-
       if (currentTime - lastExecTime > delay) {
         func.apply(this, args);
         lastExecTime = currentTime;

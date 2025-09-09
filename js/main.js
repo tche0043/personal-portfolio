@@ -33,20 +33,13 @@ class App {
       console.error("GSAP library not loaded! Animations will not work.");
     }
 
-      // 正常初始化不依賴輪播的模組
+      // 初始化所有模組
       this.contentManager = new ContentManager();
       this.navigation = new Navigation();
-
-      // 建立輪播物件
       this.portfolioCarousel = new PortfolioCarousel();
-
-      // 使用 await 等待輪播系統（包含圖片載入）完全準備就緒
-      await this.portfolioCarousel.init();
-
-      // 步驟 3：在輪播系統就緒後，才安全地初始化動畫管理器
       this.animationManager = new AnimationManager();
 
-      // ★ 新增：註冊 beforeunload 事件進行清理
+      // ★ 新增：註冊 beforeunload 與 destroy事件
       this.setupCleanup();
 
       ErrorHandler.logInfo("App", "Portfolio website initialized successfully");
@@ -55,22 +48,20 @@ class App {
     }
   }
 
-  // ★ 新增：設置清理機制
+  // 不必要時停止資源消耗
   setupCleanup() {
     // 頁面卸載時清理資源
     window.addEventListener('beforeunload', () => {
       this.destroy();
     });
 
-    // 監聽 visibilitychange 事件暫停動畫
+    // 頁面隱藏時停止動畫，恢復時繼續
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        // 頁面隱藏時暫停動畫節省資源
         if (this.portfolioCarousel && this.portfolioCarousel.portfolioTl) {
           this.portfolioCarousel.portfolioTl.pause();
         }
       } else {
-        // 頁面可見時恢復動畫
         if (this.portfolioCarousel && this.portfolioCarousel.portfolioTl) {
           this.portfolioCarousel.portfolioTl.resume();
         }
@@ -78,7 +69,6 @@ class App {
     });
   }
 
-  // ★ 新增：應用程式清理方法
   destroy() {
     try {
       // 清理各個模組
@@ -103,5 +93,4 @@ class App {
   }
 }
 
-// Initialize the application
 new App();
