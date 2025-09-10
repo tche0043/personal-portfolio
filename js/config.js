@@ -135,30 +135,3 @@ export const CONFIG = {
     CONTACT_INFO_LIST: ".contact-info-list", // 聯絡資訊列表
   },
 };
-
-// 響應式網站的工具函式
-export const UTILS = {
-  /**
-   * 節流函式 (Throttle function for performance)
-   * 限制一個函式在特定時間內只能被執行一次，用於效能優化。
-   * @param {Function} func - 要被節流的函式
-   * @param {number} delay - 延遲的毫秒數
-   */
-  throttle: (func, delay) => {
-    let timeoutId;
-    let lastExecTime = 0;
-    return function (...args) {
-      const currentTime = Date.now();
-      if (currentTime - lastExecTime > delay) {
-        func.apply(this, args);
-        lastExecTime = currentTime;
-      } else {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          func.apply(this, args);
-          lastExecTime = Date.now();
-        }, delay - (currentTime - lastExecTime));
-      }
-    };
-  },
-};

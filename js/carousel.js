@@ -1,6 +1,6 @@
 // Carousel module - handles portfolio carousel functionality
-import { CONFIG, UTILS } from "./config.js";
-import { DOMUtils, ErrorHandler, AnimationUtils } from "./utils.js";
+import { CONFIG } from "./config.js";
+import { DOMUtils, ErrorHandler, AnimationUtils, throttle } from "./utils.js";
 
 export class PortfolioCarousel {
   constructor() {
@@ -37,15 +37,15 @@ export class PortfolioCarousel {
     this.lastX = 0;
 
     // 綁在document上的事件監聽器
-    this.boundDragMove = null;
-    this.boundDragEnd = null;
+    this.boundDragMove = this.handleDragMove.bind(this);
+    this.boundDragEnd = this.handleDragEnd.bind(this);
 
     // 性能優化
     this.throttledUpdateIndicators = AnimationUtils.throttleWithRAF(
       this.updateIndicators.bind(this)
     );
 
-    this.boundResizeHandler = UTILS.throttle(this.handleResize.bind(this), 250);
+    this.boundResizeHandler = throttle(this.handleResize.bind(this), 250);
     this.init();
   }
 
@@ -90,7 +90,7 @@ export class PortfolioCarousel {
 
     this.cards = Array.from(this.carousel.querySelectorAll(CONFIG.SELECTORS.PORTFOLIO_CARDS));
 
-    // G專門用來更新輪播的 x 座標的函式
+    // GSAP專門用來更新輪播的 x 座標的函式
     this.xSetter = gsap.quickSetter(this.carousel, "x", "px");
     this.calculateDimensions();
 
@@ -124,8 +124,6 @@ export class PortfolioCarousel {
 
   setupEventListeners() {
     if (!this.container) return;
-    this.boundDragMove = (e) => this.handleDragMove(e);
-    this.boundDragEnd = () => this.handleDragEnd();
 
     // 處理滑鼠動作事件
     DOMUtils.safeAddEventListener(this.container, "mousedown", (e) => this.handleDragStart(e));
