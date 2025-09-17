@@ -51,7 +51,7 @@ export const CONFIG = {
   },
 
   HERO_SETTINGS: {
-    JOB_TITLES: ["JAVA", "Python", "SQL", "Go", "Swift"]
+    JOB_TITLES: ["Java", "Python", "SQL", "Go", "Swift"]
   },
   // 作品集數據
   PORTFOLIO_PROJECTS: [
