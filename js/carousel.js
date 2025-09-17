@@ -44,8 +44,6 @@ export class PortfolioCarousel {
     this.throttledUpdateIndicators = AnimationUtils.throttleWithRAF(
       this.updateIndicators.bind(this)
     );
-
-    this.boundResizeHandler = throttle(this.handleResize.bind(this), 250);
     this.init();
   }
 
@@ -127,8 +125,6 @@ export class PortfolioCarousel {
 
     // 處理滑鼠動作事件
     DOMUtils.safeAddEventListener(this.container, "mousedown", (e) => this.handleDragStart(e));
-    DOMUtils.safeAddEventListener(document, "mousemove", this.boundDragMove);
-    DOMUtils.safeAddEventListener(document, "mouseup", this.boundDragEnd);
     DOMUtils.safeAddEventListener(this.container, "mouseenter", () => this.pauseOnHover());
     DOMUtils.safeAddEventListener(this.container, "mouseleave", () => this.resumeOnLeave());
 
@@ -138,19 +134,30 @@ export class PortfolioCarousel {
     // 處理觸控事件
     // passive: false 預防瀏覽器上下滑動
     DOMUtils.safeAddEventListener(this.container, "touchstart", (e) => this.handleDragStart(e), { passive: false });
-    DOMUtils.safeAddEventListener(document, "touchmove", this.boundDragMove, { passive: false });
-    DOMUtils.safeAddEventListener(document, "touchend", this.boundDragEnd);
 
     // 處理指示器點擊事件
     this.indicators.forEach((indicator, index) => {
       DOMUtils.safeAddEventListener(indicator, "click", () => this.navigateToIndex(index));
     });
 
-    // 處理瀏覽器縮放事件
-    window.addEventListener("resize", this.boundResizeHandler);
-
     // 處理卡片點擊事件
     DOMUtils.safeAddEventListener(this.container, "click", (e) => this.handleClick(e), true);
+  }
+
+  // 動態綁定 document 級別的拖拽事件
+  bindDocumentDragEvents() {
+    document.addEventListener("mousemove", this.boundDragMove);
+    document.addEventListener("mouseup", this.boundDragEnd);
+    document.addEventListener("touchmove", this.boundDragMove, { passive: false });
+    document.addEventListener("touchend", this.boundDragEnd);
+  }
+
+  // 解綁 document 級別的拖拽事件
+  unbindDocumentDragEvents() {
+    document.removeEventListener("mousemove", this.boundDragMove);
+    document.removeEventListener("mouseup", this.boundDragEnd);
+    document.removeEventListener("touchmove", this.boundDragMove);
+    document.removeEventListener("touchend", this.boundDragEnd);
   }
 
   updateIndicators() {
@@ -275,9 +282,24 @@ export class PortfolioCarousel {
   }
 
   handleDragStart(e) {
+    // 驗證觸摸事件是否發生在carousel容器內
+    if (e.type.includes("touch")) {
+      const touch = e.touches[0];
+      const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (!this.container.contains(targetElement)) {
+        // 確保清理任何殘留的拖曳狀態
+        this.isDragging = false;
+        this.wasDragged = false;
+        return;
+      }
+    }
+
     this.isDragging = true;
     this.wasDragged = false;
     this.isManualControl = true;
+
+    // 動態綁定 document 級別事件（只在有效拖拽期間）
+    this.bindDocumentDragEvents();
 
     // 停止carousel以及清除計時器
     clearTimeout(this.resumeTimer);
@@ -297,8 +319,13 @@ export class PortfolioCarousel {
   }
 
   handleDragMove(e) {
-    // 確保是拖曳中
+    // 確保是拖曳中且觸摸事件來源有效
     if (!this.isDragging) return;
+
+    // 對於觸摸事件，額外驗證觸摸點是否仍在有效範圍內
+    if (e.type.includes("touch") && e.touches.length === 0) {
+      return;
+    }
 
     // 算除移動總距離
     const touch = e.type.includes("touch") ? e.touches[0] : e;
@@ -329,11 +356,20 @@ export class PortfolioCarousel {
     this.throttledUpdateIndicators();
   }
 
-  handleDragEnd() {
-    // 判斷已完成拖曳
+  handleDragEnd(e) {
+    // 判斷已完成拖曳且驗證drag session有效性
     if (!this.isDragging) return;
+
+    // 對於觸摸事件，額外驗證這是一個有效的結束事件
+    if (e && e.type.includes("touch") && this.startX === undefined) {
+      return;
+    }
+
     this.isDragging = false;
-    this.container.style.cursor = 'grab'
+    this.container.style.cursor = 'grab';
+
+    // 解綁 document 級別事件
+    this.unbindDocumentDragEvents();
 
     // 如果只是點擊沒有拖曳或沒有卡片,繼續播放
     if (!this.wasDragged || this.cardStep === 0) {
@@ -402,26 +438,6 @@ export class PortfolioCarousel {
     }
   }
 
-  handleResize() {
-    // 先停止輪播
-    if (this.portfolioTl) this.portfolioTl.pause();
-
-    // 紀錄現在卡片的位置
-    const rawIndex = this.cardStep > 0 ? Math.round(this.currentX / -this.cardStep) : 0;
-    const activeIndex = this.wrapIndex(rawIndex);
-
-    // 重新計算縮放後的大小
-    this.calculateDimensions();
-
-    // 重新計算X
-    const newX = -this.cardStep * activeIndex;
-    this.currentX = this.wrap(newX);
-    this.xSetter(this.currentX);
-
-    if (this.observer && this.observer.isIntersecting) {
-      this.startAutoScroll();
-    }
-  }
   setupIntersectionObserver() {
     if (!this.container) return;
 
@@ -456,12 +472,8 @@ export class PortfolioCarousel {
     if (this.portfolioTl) this.portfolioTl.kill();
     if (this.observer) this.observer.disconnect();
 
-    // 移除所有事件監聽器
-    window.removeEventListener("resize", this.boundResizeHandler);
-    if (this.boundDragMove) document.removeEventListener("mousemove", this.boundDragMove);
-    if (this.boundDragEnd) document.removeEventListener("mouseup", this.boundDragEnd);
-    if (this.boundDragMove) document.removeEventListener("touchmove", this.boundDragMove);
-    if (this.boundDragEnd) document.removeEventListener("touchend", this.boundDragEnd);
+    // 確保解綁任何殘留的 document 級別事件
+    this.unbindDocumentDragEvents();
 
     this.carousel = null;
     this.container = null;
@@ -474,7 +486,6 @@ export class PortfolioCarousel {
     this.wrap = null;
     this.wrapIndex = null;
     this.throttledUpdateIndicators = null;
-    this.boundResizeHandler = null;
     this.boundDragMove = null;
     this.boundDragEnd = null;
   }
